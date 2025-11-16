@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>BKF Quiz – Güterkraftverkehr</title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f172a;
+      color: #e5e7eb;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding: 24px;
+    }
+    .card {
+      background: #020617;
+      border-radius: 18px;
+      padding: 24px 28px;
+      max-width: 820px;
+      width: 100%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.45);
+      border: 1px solid rgba(148,163,184,0.25);
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 1.4rem;
+      color: #f9fafb;
+    }
+    .sub {
+      color: #9ca3af;
+      font-size: 0.9rem;
+    }
+    .question-number {
+      font-size: 0.9rem;
+      color: #a5b4fc;
+      margin-bottom: 6px;
+    }
+    .question-text {
+      font-size: 1.05rem;
+      margin-bottom: 16px;
+    }
+    .options {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px 0;
+    }
+    .options li {
+      margin-bottom: 8px;
+    }
+    label.option {
+      display: flex;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      align-items: center;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    label.option:hover {
+      background: rgba(148,163,184,0.08);
+      border-color: rgba(129,140,248,0.7);
+    }
+    input[type="radio"],
+    input[type="checkbox"] {
+      accent-color: #4f46e5;
+    }
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+      margin-bottom: 8px;
+    }
+    button {
+      border: none;
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .btn-main {
+      background: #4f46e5;
+      color: #f9fafb;
+    }
+    .btn-main:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid rgba(148,163,184,0.5);
+    }
+    .feedback {
+      min-height: 26px;
+      font-size: 0.95rem;
+      margin-top: 4px;
+    }
+    .feedback.ok {
+      color: #22c55e;
+    }
+    .feedback.err {
+      color: #f97316;
+    }
+    .correct-answer {
+      font-size: 0.9rem;
+      color: #9ca3af;
+      min-height: 20px;
+    }
+    .bottom-info {
+      border-top: 1px solid rgba(31,41,55,0.9);
+      margin-top: 16px;
+      padding-top: 10px;
+      font-size: 0.8rem;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .pill {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(148,163,184,0.6);
+      font-size: 0.75rem;
+      color: #e5e7eb;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>BKF Quiz – Güterkraftverkehr</h1>
+    <div class="sub">
+      Sırayla soruları çöz.  <b>Eren abim sağolsun</b>  (checkbox). Olursa ekime olmazsa sikime kadar.
+    </div>
+
+    <div id="quiz-container" style="margin-top:18px;">
+      <div class="question-number" id="q-number"></div>
+      <div class="question-text" id="q-text"></div>
+      <ul class="options" id="q-options"></ul>
+
+      <div class="btn-row">
+        <button class="btn-main" id="check-btn">Kontrol et</button>
+        <button class="btn-ghost" id="next-btn" disabled>Bekleme yapma ⮞</button>
+      </div>
+
+      <div id="feedback" class="feedback"></div>
+      <div id="correct-answer" class="correct-answer"></div>
+    </div>
+
+    <div class="bottom-info">
+      <span id="progress-pill" class="pill"></span>
+      <span>Not: <b>Karşılık beklemeden yapıldı.</b> </span>
+    </div>
+  </div>
+
+  <script>
+    // A = 0, B = 1, C = 2, D = 3, E = 4 ...
+    // correctIndexes: bir veya daha fazla doğru şık index'i
+    const questions = [
+      {
+        // 1. soru
+        question: "Was versteht man unter dem elastischen Bereich eines Motors?",
+        options: [
+          "alle Bauteile aus Kunststoff",
+          "der Leerlaufbereich des Motors",
+          "der Drehzahlbereich zwischen maximalem Drehmoment und maximaler Leistung",
+          "der Bereich mit den niedrigsten Motorschwingungen"
+        ],
+        correctIndexes: [2]
+      },
+      {
+        // 2. soru
+        question: "Aus welcher Darstellung kann der Fahrer Rückschlüsse auf den Kraftstoffverbrauch in Abhängigkeit von der Motordrehzahl entnehmen?",
+        options: [
+          "aus dem Traglastdiagramm",
+          "aus der spezifischen Verbrauchskurve",
+          "aus der Drehmomentkurve",
+          "aus der Leistungskurve"
+        ],
+        correctIndexes: [1]
+      },
+      {
+        // 3. soru
+        question: "Welcher Fahrstil ist nicht wirtschaftlich?",
+        options: [
+          "wenn man mit motortechnisch guten Bedingungen fährt",
+          "möglichst gleichmäßig mit Höchstdrehzahl fahren",
+          "vorausschauend fahren",
+          "Fahrzeug möglichst gleichmäßig in Schwung halten"
+        ],
+        correctIndexes: [1]
+      },
+      {
+        // 4. soru
+        question: "Mit welcher Motordrehzahl fährt man sehr wirtschaftlich?",
+        options: [
+          "Wenn man mit der Nenndrehzahl des Motors fährt.",
+          "Mit einer mittleren Motordrehzahl, die im grün markierten Bereich des Drehzahlmessers liegt.",
+          "Es gibt keine allgemein gültige Regel, da Motoren sehr unterschiedlich sind.",
+          "Wenn man im obersten Drehzahlbereich fährt, weil da das größte Drehmoment ist."
+        ],
+        correctIndexes: [1]
+      },
+      {
+        // 5. soru – çok doğru şıklı
+        question: "Die Kupplung ist ein Verschleißteil. Was kann man machen, damit der Verschleiß gering bleibt?",
+        options: [
+          "Beim Schalten keine Gänge überspringen.",
+          "Nicht mit hohen Drehzahlen anfahren",
+          "Mit hohen Drehzahlen anfahren und spät schalten.",
+          "Nicht zu lange mit eingelegtem Gang an der Kreuzung stehen",
+          "Beim Anfahren viel Gas geben und spät Schalten."
+        ],
+        // B und D
+        correctIndexes: [1, 3]
+      },
+      {
+        // 6. soru
+        question: "Anfahren mit Lkw oder Bussen: Welche Aussage ist falsch?",
+        options: [
+          "Beim Anfahren soll man die Motordrehzahl erst nach dem vollständigen Einkuppeln erhöhen.",
+          "Beim Anfahren soll man vor dem Einkuppeln den Motor auf eine mittlere Drehzahl bringen.",
+          "Man soll immer mit dem Gang anfahren, wie es in der Betriebsanleitung steht.",
+          "Vorsichtiges Einkuppeln mit niedriger Motordrehzahl schont das Material."
+        ],
+        // senin verdiğin cevaba göre: A (eğer B dersen bunu [1] yaparız)
+        correctIndexes: [0]
+      },
+      {
+        // 7. soru
+        question: "Sie fahren ein Kraftfahrzeug mit ABV (Antiblockierverhinderer) auf einer glatten Fahrbahn. Wie bremsen Sie mit ABV am besten?",
+        options: [
+          "mit voller Kraft",
+          "vorsichtig",
+          "mit halber Kraft",
+          "gleichzeitig mit der Betriebsbremse und mit der Feststellbremse"
+        ],
+        correctIndexes: [0]
+      },
+
+      // --- Buradan itibaren senin verdiğin 17–50. sorular ---
+
+      {
+        // 17
+        question: "Was kann mit der Druckverlustprüfung (Druckabfall bei Vollbremsung) überprüft werden?",
+        options: [
+          "Man prüft, ob das Mehrkreisschutzventil funktioniert.",
+          "Man prüft, ob der Druckregler funktioniert.",
+          "Man prüft, ob der Lufttrockner funktioniert.",
+          "Man prüft den Abfall des Drucks im Vorratsbehälter"
+        ],
+        correctIndexes: [3] // d
+      },
+      {
+        // 18
+        question: "Welche Radbremsen haben LKW, Anhänger und Busse?",
+        options: [
+          "Trommelbremse",
+          "Backenbremse",
+          "Schleifbandbremse",
+          "Scheibenbremse",
+          "Felgenbremse"
+        ],
+        correctIndexes: [0, 3] // a d
+      },
+      {
+        // 19
+        question: "Während der Abfahrtskontrolle stellen Sie bei der Bremsprobe einen Druckverlust von mehr als 0,7 bar fest. Was könnte für den erhöhten Druckverlust verantwortlich sein?",
+        options: [
+          "undichte Kupplungsköpfe der Bremsleitungen",
+          "defekte Radbremszylinder",
+          "zu hohe Leistung des Kompressors/Luftpressers",
+          "falsche Einstellung des ALB-Reglers am Anhänger",
+          "zu geringe Leistung des Kompressors/Luftpressers"
+        ],
+        correctIndexes: [0, 1] // a b
+      },
+      {
+        // 20
+        question: "Wann sollte der Geschwindigkeitsregler (Tempomat) benutzt werden?",
+        options: [
+          "Der Geschwindigkeitsregler sollte nur bei nasser Fahrbahn benutzt werden.",
+          "Der Geschwindigkeitsregler sollte benutzt werden, wenn die Verkehrsverhältnisse eine gleichbleibende Geschwindigkeit erlauben.",
+          "Der Geschwindigkeitsregler sollte nur in Steigungen oder Gefällen benutzt werden.",
+          "Der Geschwindigkeitsregler sollte nur bei hohen Geschwindigkeiten benutzt werden."
+        ],
+        correctIndexes: [1] // b
+      },
+      {
+        // 21
+        question: "Sie kontrollieren Ihr Fahrzeug vor der Abfahrt. Bei der Bremsprobe merken Sie, dass der Druckverlust größer als 0,7 bar ist. Welche Ursachen sind möglich?",
+        options: [
+          "Der ALB-Regler am Anhänger ist falsch eingestellt.",
+          "Der Kompressor hat eine zu niedrige Leistung.",
+          "Der Lastzug ist falsch beladen.",
+          "Bremsleitungen oder Bremsschläuche sind defekt.",
+          "Der Druckluftvorrat in den Druckluftbehältern ist zu niedrig, weil Kondenswasser in den Druckluftbehältern ist."
+        ],
+        correctIndexes: [3, 4] // d e
+      },
+      {
+        // 22
+        question: "Welches Bauteil produziert die Druckluft in pneumatischen Bremsanlagen?",
+        options: [
+          "der Druckregler",
+          "der Kompressor (Luftpresser)",
+          "der Lufttrockner",
+          "das Vierkreis-Schutzventil"
+        ],
+        correctIndexes: [1] // b
+      },
+      {
+        // 23
+        question: "Ihr Fahrzeug ist mit einer Druckluftbremse ausgerüstet. Welche Aggregate am Fahrzeug stellen die Versorgung und Speicherung der Druckluft sicher?",
+        options: [
+          "Kompressor",
+          "Mehrkreisschutzventil",
+          "Druckluftbehälter",
+          "Trittplattenbremsventil",
+          "Federspeicherbremszylinder"
+        ],
+        correctIndexes: [0, 2] // a c
+      },
+      {
+        // 24
+        question: "Ihr Fahrzeug hat eine Druckluftbremse. Welche 2 Bauteile in der Druckluftanlage schützen vor Einfrieren?",
+        options: [
+          "Kompressor (Luftpresser)",
+          "Lufttrockner",
+          "Entwässerungsventil",
+          "Luftbehälter",
+          "Mehrkreisschutzventil"
+        ],
+        correctIndexes: [1, 2] // b c
+      },
+      {
+        // 25
+        question: "Elektronisch Geregeltes Bremssystem (EBS): Welche Aussagen sind richtig?",
+        options: [
+          "Mit dem EBS-System wird der Bremsvorgang komplett elektronisch gesteuert und überwacht.",
+          "Ein LKW mit Ladung kann mit einem EBS-System schneller fahren, weil er besser bremsen kann.",
+          "Mit einem EBS-System kann man besser bremsen und das Fahrzeug bleibt beim Bremsen stabiler.",
+          "Bei langen Autobahnfahrten braucht man kein EBS-System. Man braucht nur für schwieriges Gelände ein EBS-System, weil das Fahrzeug mit EBS-System nicht rutscht.",
+          "Wenn das Fahrzeug ein EBS-System hat, dann kann der Fahrer sehen, an welchem Rad die Bremsbeläge verschlissen sind und neu gemacht werden müssen."
+        ],
+        correctIndexes: [0, 2] // a c
+      },
+      {
+        // 26
+        question: "Was ist der \"Einschaltdruck\" bei Druckluft-Bremsanlagen?",
+        options: [
+          "Der Einschaltdruck ist der Druck, bei dem der Druckregler abschaltet, um die Anlage vor Überdruck zu schützen.",
+          "Bei Erreichen des Einschaltdruckes wird der Lufttrockner durch den Regenerationsbehälter wieder getrocknet.",
+          "Der Einschaltdruck ist der Druck, bei dem der Druckregler einschaltet, um die Bremsanlage wieder mit Druckluft zu befüllen.",
+          "Der Einschaltdruck des Druckreglers bestimmt den Zeitpunkt zum Lösen des Federspeichers."
+        ],
+        correctIndexes: [2] // c
+      },
+      {
+        // 27
+        question: "Das Feststellbremsventil hat eine Kontrollstellung. Was können Sie mit der Kontrollstellung überprüfen? Mit der Kontrollstellung überprüft man ...",
+        options: [
+          "ob die ALB-Anlage noch funktioniert.",
+          "ob die Feststellbremse vom Motorwagen den gesamten Lastzug an einem Gefälle halten kann, auch wenn die Anhängerbremse gelöst ist.",
+          "wie das Vierkreisschutzventil funktioniert.",
+          "ob der Membranzylinder dicht ist."
+        ],
+        correctIndexes: [1] // b
+      },
+      {
+        // 28
+        question: "Was bewirkt der Lufttrockner im System der Bremsanlage?",
+        options: [
+          "Der Lufttrockner bringt kalte, getrocknete Luft an die Radbremse und kühlt diese.",
+          "Der Lufttrockner hilft bei der automatischen Reinigung der Bremstrommeln.",
+          "Der Lufttrockner hilft gegen Bremsen-Fading im Schiebebetrieb.",
+          "Der Lufttrockner entzieht der Luft Feuchtigkeit."
+        ],
+        correctIndexes: [3] // d
+      },
+      {
+        // 29
+        question: "Bei einer Notbremsung dürfen die Räder beim Fahrzeug nicht blockieren. Deshalb hat das Fahrzeug ein Assistenz-System. Wie heißt das Assistenz-System?",
+        options: [
+          "Blockierverhinderungs-System",
+          "Bremsassistenz-System",
+          "Spurhalteassistenz-System",
+          "Reifendruckkontroll-System"
+        ],
+        correctIndexes: [0] // a
+      },
+      {
+        // 30
+        question: "Automatischer Antiblockierverhinderer (ABV): Welche Aussage ist richtig?",
+        options: [
+          "ABV lässt das Lenken beim Bremsen in kritischen Fahrzuständen zu.",
+          "Nutzfahrzeuge haben kein ABV.",
+          "Mit einem ABV kann man bergab und in Kurven schneller fahren.",
+          "Das ABV funktioniert nur, wenn die Fahrbahn nass ist."
+        ],
+        correctIndexes: [0] // a
+      },
+      {
+        // 31
+        question: "Wie arbeitet eine elektronische Dieselregelung (EDC) in Nutzfahrzeugen?",
+        options: [
+          "Sie steuert die Betankung in automatischen Betankungsanlagen.",
+          "Sie steuert durch Auswertung von Sensordaten die Dieseleinspritzung.",
+          "Sie erkennt defekte Kraftstoffleitungen und schützt so vor Kraftstoffverlust.",
+          "Bei Fahrzeugen mit 2 Tanks steuert sie die Förderung des Kraftstoffes in den Haupttank."
+        ],
+        correctIndexes: [1] // b
+      },
+      {
+        // 32
+        question: "Was regelt der Geschwindigkeitsbegrenzer?",
+        options: [
+          "die Kraftstoffzufuhr",
+          "die Mindestgeschwindigkeit",
+          "er beschränkt die Geschwindigkeit auf einen eingestellten Wert",
+          "die bauartbedingte Höchstgeschwindigkeit",
+          "den Abstand zum Vorausfahrenden"
+        ],
+        correctIndexes: [0, 2] // a c
+      },
+      {
+        // 33
+        question: "Welche Vorteile hat ein Tempomat?",
+        options: [
+          "Er senkt den Kraftstoffverbrauch durch gleichmäßige Fahrweise.",
+          "Er dient zur Einhaltung von Geschwindigkeitsbeschränkungen.",
+          "Er wechselt immer in den richtigen Gang",
+          "Er passt die Geschwindigkeit dem Kurvenradius an.",
+          "Er überwacht die Konzentration des Fahrers."
+        ],
+        correctIndexes: [0, 1] // a b
+      },
+      {
+        // 34
+        question: "Wann sollte man den Geschwindigkeitsregler (Tempomat) benutzen?",
+        options: [
+          "nur bei nasser Fahrbahn",
+          "wenn die Verkehrsverhältnisse eine gleichbleibende Geschwindigkeit erlauben.",
+          "nur bei Steigungen oder Gefällen",
+          "nur bei hohen Geschwindigkeiten"
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 35
+        question: "Sie fahren mit einem Anhänger ohne Ladung. Bei einer Vollbremsung bricht Ihr Anhänger seitlich aus. Welche technischen Ursachen kann das Ausbrechen haben?",
+        options: [
+          "Die lastabhängige Bremse des Anhängers ist falsch eingestellt.",
+          "Das Zugfahrzeug ist einseitig beladen.",
+          "Die Reifen des Zugfahrzeuges sind stark abgenutzt.",
+          "Ein Radbremszylinder beim Anhänger ist ausgefallen.",
+          "Die Schlauchverbindungen zum Anhänger sind vertauscht."
+        ],
+        correctIndexes: [0, 3] // a d
+      },
+      {
+        // 36
+        question: "Manche Nutzfahrzeuge haben wassergekühlte Retarder zur Unterstützung der Bremsanlage. Welche Aussage ist richtig?",
+        options: [
+          "Retarder sind laut. Man darf die Retarder deshalb nachts nicht in geschlossenen Ortschaften benutzen.",
+          "Die Motordrehzahl muss hoch genug sein, sonst sind die Förderleistung der Kühlmittelpumpe und die Lüfterdrehzahl zu klein.",
+          "Wenn die Kühlwassertemperatur steigt, wirkt der Retarder besser.",
+          "Beim Benutzen von Retardern verschleißt der Bremsbelag schneller."
+        ],
+        correctIndexes: [1] // b
+      },
+      {
+        // 37
+        question: "Wie können Sie die Wirkung der Motorbremse erhöhen?",
+        options: [
+          "Sie schalten in einen niedrigeren Gang.",
+          "Sie schalten in einen höheren Gang.",
+          "Sie nutzen eine vorhandene Differentialsperre.",
+          "Sie stellen den Geschwindigkeitsbegrenzer auf eine niedrigere Geschwindigkeit."
+        ],
+        correctIndexes: [0] // a
+      },
+      {
+        // 38
+        question: "Welche Aussage zur Dauerbremse stimmt?",
+        options: [
+          "Die Dauerbremse bremst den Anhänger ab, damit der Zug gestreckt bleibt.",
+          "Die Dauerbremse ist eine Feststellbremse.",
+          "Die Dauerbremse ist eine Hilfsbremsanlage für die Feststellbremse.",
+          "Die Dauerbremse schont die Betriebsbremse."
+        ],
+        correctIndexes: [3] // d
+      },
+      {
+        // 39
+        question: "Bremsen: Sie befahren eine Gefällstrecke. Welche Aufgaben hat hier die Dauerbremsanlage?",
+        options: [
+          "auf langen Gefällstrecken die Geschwindigkeit gleich halten oder verringern",
+          "das Fahrzeug im Notfall bis zum Stillstand abbremsen",
+          "eine Überhitzung der Betriebsbremse verhindern",
+          "höhere Geschwindigkeiten im Fahrbetrieb ermöglichen",
+          "ein Überbremsen des Anhängers verhindern"
+        ],
+        correctIndexes: [0, 2] // A C
+      },
+      {
+        // 40
+        question: "Wann wird die Dauerbremse benutzt?",
+        options: [
+          "auf langen, steilen Gefällstrecken",
+          "beim Stop-and-Go-Verkehr",
+          "beim Befahren von Steigungen",
+          "bei schlechten Fahrbahnverhältnissen oder kritischen Witterungsverhältnissen (z. B. Schnee, Wasserglätte)"
+        ],
+        correctIndexes: [0] // a
+      },
+      {
+        // 41
+        question: "Welche Aufgaben hat die Feststellbremse?",
+        options: [
+          "das Fahrzeug gegen Wegrollen sichern",
+          "die Betriebsbremse entlasten",
+          "den Bremsdruck feststellen",
+          "den Fahrer beim Anfahren unterstützen",
+          "die Bremswirkung gleichmäßig auf alle Räder verteilen"
+        ],
+        correctIndexes: [0, 3] // a d
+      },
+      {
+        // 42
+        question: "Was ist eine Dauerbremsanlage?",
+        options: [
+          "eine verschleißfreie Bremse zur Entlastung der Betriebsbremse",
+          "eine Bremsanlage, die man dauernd betätigen muss",
+          "eine im Fahrzeug eingebaute Bremsanlage, die automatisch immer aktiv ist",
+          "ein Retarder",
+          "Eine Bremsanlage, welche die Betriebsbremse ersetzt."
+        ],
+        correctIndexes: [0, 3] // a d
+      },
+      {
+        // 43
+        question: "Was ist eine \"Dauerbremse\"?",
+        options: [
+          "Feststellbremse",
+          "Trommelbremse",
+          "Retarder",
+          "Scheibenbremse"
+        ],
+        correctIndexes: [2] // c
+      },
+      {
+        // 44
+        question: "Was geschieht in technischer Hinsicht bei Fahrzeugen mit Schaltgetriebe, wenn die Motorbremse vom Fahrer betätigt wird?",
+        options: [
+          "Eine Klappe im Auspuffkrümmer wird geschlossen, der Einspritzvorgang im Motor wird nicht verändert.",
+          "Die Nockenwelle wird soweit verdreht, dass der Ansaugtakt den Arbeitstakt im Motor überlagert.",
+          "Der Einspritzpunkt wird um 180 Grad verschoben.",
+          "Eine Klappe im Auspuffkrümmer wird geschlossen und das Einspritzsystem auf Nullförderung gestellt."
+        ],
+        correctIndexes: [3] // d
+      },
+      {
+        // 45
+        question: "Ab welchem zulässigen Gesamtgewicht müssen Lkw und Sattelzugmaschinen eine Dauerbremse haben?",
+        options: [
+          "mehr als 3,5 t",
+          "mehr als 7,5 t",
+          "mehr als 9 t",
+          "mehr als 12 t"
+        ],
+        correctIndexes: [3] // d
+      },
+      // 47 açık uçlu olduğu için şimdilik atladık
+      {
+        // 46
+        question: "Welche technische Bremseinrichtung ist keine Dauerbremse?",
+        options: [
+          "die Auspuffklappen-Bremse",
+          "die Magnetpulver-Trommelbremse",
+          "die Wirbelstrom-Bremse (Retarder)",
+          "eine Kombination aus Auspuffklappenbremse und Wirbelstrombremse (Retarder)."
+        ],
+        correctIndexes: [1] // b
+      },
+      {
+        // 48
+        question: "Warum brauchen Kraftfahrzeuge mit Verbrennungsmotor ein Getriebe?",
+        options: [
+          "Ohne Getriebe kann man nicht anhalten.",
+          "Der Motor würde sonst nicht seine höchste Leistung erreichen.",
+          "Um die Motorleistung zu erhöhen.",
+          "Die Motorkraft wird für jeden Fahrbetrieb angepasst."
+        ],
+        correctIndexes: [3] // d
+      },
+      {
+        // 49
+        question: "Was bedeutet 'Gänge überspringen' beim Schalten?",
+        options: [
+          "Der Kraftfahrer schaltet immer wieder von der großen Schaltgruppe in die kleine Schaltgruppe.",
+          "Der Kraftfahrer überspringt bei einem Schaltvorgang 1 oder mehrere Gänge.",
+          "Der Kraftfahrer betätigt bei jedem Gangwechsel das Gaspedal.",
+          "Der Kraftfahrer betätigt bei jedem Gangwechsel 2-mal das Kupplungspedal."
+        ],
+        correctIndexes: [1] // b
+      },
+      {
+        // 50
+        question: "Sie fahren auf ebener Landstraße. Geschwindigkeit: 60 km/h. Sie wollen den niedrigsten Kraftstoffverbrauch erreichen. Welchen Gang legen Sie ein?",
+        options: [
+          "den höchsten möglichen Gang",
+          "den kleinsten möglichen Gang",
+          "einen mittleren Gang",
+          "Man muss ständig die Gänge wechseln, um eine hohe Drehzahl des Motors zu halten."
+        ],
+        correctIndexes: [0] // a
+      },
+      {
+        // 51
+        question: "Welches Verhältnis von Aufprallenergie zu Geschwindigkeit ist richtig?",
+        options: [
+          "2 x Geschwindigkeit = 4 x Aufprallenergie",
+          "2 x Geschwindigkeit = 2 x Aufprallenergie",
+          "Die Aufprallenergie ist immer gleich der Geschwindigkeit.",
+          "Bis 35 km/h bleibt die Aufprallenergie konstant, ab dann halbiert sie sich."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 52
+        question: "Sicherheit: Welche Aussage zum Elektronischen Stabilitätsprogramm (ESP) ist richtig?",
+        options: [
+          "ESP erhöht die Sicherheit bei Kurvenfahrten.",
+          "ESP verringert die Lenkkräfte bei voll beladenem Fahrzeug.",
+          "ESP kann die Traktion der Antriebsräder erhöhen.",
+          "Fahrzeuge mit ESP haben bei Nässe einen viel kürzeren Bremsweg."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 53
+        question: "Bremsen: Ihr Fahrzeug hat einen hydrodynamischen Retarder. Welche Aussage zur Benutzung des Retarders ist richtig?",
+        options: [
+          "Wenn man den Betätigungshebel loslässt, geht der Retarder automatisch wieder in die Nullstellung zurück.",
+          "Die Motordrehzahl darf nicht zu niedrig sein.",
+          "Dieser Retarder wirkt ausschließlich auf die Vorderachse.",
+          "Die Benutzung dieses Retarders erhöht den Bremsbelag-Verschleiß."
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 54
+        question: "Die Betriebsbremse wird sehr lange ohne Unterbrechung benutzt. Welche Schwierigkeiten können auftreten?",
+        options: [
+          "Nachlassen der Bremswirkung durch Fading",
+          "Überhitzung und Ausfall der Bremsanlage",
+          "Druckluftabfall durch übermäßige Erwärmung der Bremsanlage",
+          "Abnutzung der Bremsscheiben durch übermäßige Bildung von Kondenswasser",
+          "Dampfblasenbildung im Vorratsbehälter und Öffnen des Überdruckventils"
+        ],
+        correctIndexes: [0, 1] // A+B
+      },
+      {
+        // 55
+        question: "Bremsen: Sie fahren einen mit Druckluft gebremsten Lastzug. Welche Aufgabe hat die Kontrollstellung der Feststellbremse?",
+        options: [
+          "Man kann die Funktion der Feststellbremse im Anhänger überprüfen (z.B. bei der Abfahrtskontrolle).",
+          "Man kann die Funktion des ABS im Anhängerbetrieb kontrollieren und überwachen.",
+          "Man kann prüfen, ob die Feststellbremse des Zugfahrzeuges allein den Lastzug im Gefälle halten kann.",
+          "Man kann prüfen, ob der Luftpresser richtig arbeitet."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 56
+        question: "Die Kühlwassertemperatur steigt. Was kann der Grund sein?",
+        options: [
+          "Das Fahrzeug hat Ladung und fährt lange Zeit mit schleifender Fahrkupplung.",
+          "Falsch eingestellte ALB.",
+          "Bei Fahrten bergab im Anhängerbetrieb wird zu viel Kraftstoff eingespritzt.",
+          "Dauerhafte Benutzung des hydrodynamischen Retarders bei niedriger Motordrehzahl."
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 57
+        question: "Reifenwechsel an einem unbeladenem Sattelauflieger: Welche Reihenfolge ist richtig?",
+        options: [
+          "Warnweste anziehen, Fahrzeug gegen Wegrollen sichern, Radmuttern des defekten Rades lockern, Fahrzeug anheben, defektes Rad abnehmen, Ersatzrad aufstecken, Radmuttern über Kreuz anziehen",
+          "Warnweste anziehen, Fahrzeug gegen Wegrollen sichern, Fahrzeug anheben, Radmuttern des defekten Rades lockern, defektes Rad abnehmen, Ersatzrad aufstecken, Radmuttern über Kreuz anziehen",
+          "Warnweste anziehen, Radmuttern des defekten Rades lockern, Fahrzeug anheben, defektes Rad abnehmen, Fahrzeug gegen Wegrollen sichern, Ersatzrad aufstecken, Radmuttern über Kreuz anziehen",
+          "Warnweste anziehen, Fahrzeug gegen Wegrollen sichern, Radmuttern des defekten Rades lockern, Fahrzeug anheben, Ersatzrad aufstecken, defektes Rad abnehmen, Radmuttern über Kreuz anziehen"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 58
+        question: "Sie betätigen das Entwässerungsventil eines Druckluft-Vorratsbehälters an der Bremsanlage. Wie erkennen Sie, dass der Lufttrockner defekt ist?",
+        options: [
+          "Austritt von sehr heißer Luft",
+          "Andauernde Signaltöne in kurzen Intervallen",
+          "Flüssigkeit tritt beim Betätigen des Entwässerungsventils aus.",
+          "starker Luftaustritt am Überdruckventil"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 59
+        question: "Beim Betätigen der Betriebsbremsanlage gibt es einen hörbaren Druckluftverlust. Welche Maßnahme ist richtig?",
+        options: [
+          "Weiterfahren. Bei modernen Fahrzeugen mit Vierkreis-Schutzventilen ist eine Weiterfahrt problemlos möglich.",
+          "Anhalten. Ein Weiterfahren ohne Prüfung des Druckluftverlustes ist verboten.",
+          "Weiterfahren. Die Leistung des Kompressors ist ausreichend. Man kann problemlos weiterfahren.",
+          "Wenn sich die Vorratsanzeige nicht verändert, kann man weiterfahren."
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 60
+        question: "Die Kupplung rutscht. Was kann die Ursache sein?",
+        options: [
+          "zu kleiner Gang eingelegt",
+          "verölte Kupplungsscheibe",
+          "zu hohe Motortemperatur",
+          "verschlissene Kupplungsscheibe",
+          "Rückholfeder vom Pedal gebrochen"
+        ],
+        correctIndexes: [1, 3] // B+D
+      },
+      {
+        // 61
+        question: "Bremsen: Sie fahren ein Fahrzeug mit Schaltgetriebe. Die Betriebsbremse ist defekt. Wie verhalten Sie sich richtig?",
+        options: [
+          "Fahrpedal nur leicht betätigen, um die Motorbremse zu nutzen.",
+          "durch Einsatz des Retarders und Zurückschalten die Geschwindigkeit reduzieren",
+          "vorsichtig weiterfahren und sofort Notfallkräfte anfordern",
+          "Sofern vorhanden, versuche ich, das Fahrzeug in einer Notfallspur zum Stehen zu bringen.",
+          "den Rückwärtsgang einlegen"
+        ],
+        correctIndexes: [1, 3] // B+D
+      },
+      {
+        // 62
+        question: "Welche Reihenfolge ist bei einem Radwechsel richtig?",
+        options: [
+          "Fahrzeug sichern - Radmuttern lösen - Fahrzeug anheben - Ersatzrad montieren - Fahrzeug absenken - Radmuttern nachziehen",
+          "Radmuttern lösen - Fahrzeug anheben - Fahrzeug sichern - Ersatzrad montieren - Fahrzeug absenken - Radmuttern nachziehen",
+          "Fahrzeug sichern - Radmuttern lösen - Fahrzeug anheben - Ersatzrad montieren - Radmuttern nachziehen - Fahrzeug absenken",
+          "Fahrzeug anheben - Radmuttern lösen - Fahrzeug sichern - Ersatzrad montieren - Radmuttern nachziehen - Fahrzeug absenken"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 63
+        question: "Warum brauchen Federspeicher eine zusätzliche Löse-Einrichtung?",
+        options: [
+          "um das Fahrzeug abschleppfähig zu machen, wenn die Druckluft ausfällt",
+          "damit der Federspeicher entleert werden kann",
+          "als Ersatz für Unterlegkeile",
+          "um Schwertransporte durchführen zu können"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 64
+        question: "Welche Aussage zur Motortemperatur ist richtig?",
+        options: [
+          "Wenn man nach Kaltstart schonend warm fährt, hält man den Verschleiß geringer.",
+          "Je niedriger die Kühlwassertemperatur ist, desto günstiger kann der Motor arbeiten.",
+          "Motorbetrieb im unteren Temperaturbereich vermindert Verschleiß und Kraftstoffverbrauch.",
+          "Durch Warmlaufenlassen im Stand nutzt man die Zeit der Abfahrtkontrolle besser."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 65
+        question: "Das Abgas eines Dieselmotors ist schwarz. Was kann die Ursache sein?",
+        options: [
+          "verstopfter Kraftstofffilter",
+          "zu hohe Cetanzahl des Dieselkraftstoffes",
+          "falscher Einspritzzeitpunkt",
+          "Einspritzmenge zu gering"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 66
+        question: "Was deutet im Fahrbetrieb auf einen verschmutzten Luftfilter hin?",
+        options: [
+          "geringe Motorleistung und schwarze Abgastrübung",
+          "geringe Motorleistung verbunden mit weißem Auspuffqualm",
+          "schlechte Gasannahme und überhöhte Leerlaufdrehzahl des Motors",
+          "zu niedriger Öldruck und Motoraussetzer mit Leistungsverlust"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 67
+        question: "Ihr Fahrzeug hat eine elektronische Fahrdynamikregelung (ESP). Was kann in kritischen Situationen passieren?",
+        options: [
+          "Wenn die Räder bei Glatteis die Haftreibung auf der Fahrbahn verlieren, ist die Wirkung eines ESP-Systems stark eingeschränkt.",
+          "Wenn das ESP-System technisch gut funktioniert, dann bleibt das Fahrzeug auch bei schlechten Wetterverhältnissen immer zuverlässig stabil.",
+          "Bei schlechten Wetterverhältnissen kann das ESP-System nicht immer richtig auf einzelne Räder einwirken.",
+          "Ein Fahrer kann sich immer darauf verlassen, dass ein technisch einwandfrei funktionierendes ESP-System die Stabilität des Fahrzeuges gewährleistet.",
+          "Bei trockener Straße hat ein ESP-System keine Wirkung."
+        ],
+        correctIndexes: [0, 2] // A+C
+      },
+      {
+        // 68
+        question: "Welche Maßnahme darf man nie zur Fließverbesserung von Dieselkraftstoff machen?",
+        options: [
+          "Superbenzin als Fließverbesserer in den Tank geben",
+          "Sommer-Diesel gegen Winter-Diesel auswechseln",
+          "Fahrzeug mit Kraftstoffvorwärmer nachrüsten",
+          "Wärmedämmung des Tanks"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 69
+        question: "Welche Maßnahme darf man nie zur Fließverbesserung von Dieselkraftstoff machen?",
+        options: [
+          "Superbenzin als Fließverbesserer in den Tank geben",
+          "Sommer-Diesel gegen Winter-Diesel auswechseln",
+          "Fahrzeug mit Kraftstoffvorwärmer nachrüsten",
+          "Wärmedämmung des Tanks"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 70
+        question: "Welche Aussage der Abgasnorm für Dieselfahrzeuge ist richtig?",
+        options: [
+          "Ein Euro-5-Fahrzeug hat geringere Schadstoffwerte als ein Euro-3-Fahrzeug.",
+          "Ein Euro-3-Fahrzeug hat geringere Schadstoffwerte als ein Euro-5-Fahrzeug.",
+          "Ein Euro-4-Fahrzeug hat geringere Schadstoffwerte als ein Euro-6-Fahrzeug.",
+          "Der Schadstoffausstoß ist zwischen allen Euro-Normen gleich groß."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 71
+        question: "Welches Verhalten erhöht die schädlichen Abgase eines Kraftfahrzeuges?",
+        options: [
+          "regelmäßige Kontrolle des Luftdruckes",
+          "Wechselintervalle des Luftfilters nicht beachten",
+          "im elastischen Drehzahlbereich fahren",
+          "die vorgeschriebenen Höchstgeschwindigkeiten einhalten"
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 72
+        question: "Welche Ursache kann bei niedrigen Außentemperaturen zum Ausfall der Diesel-Kraftstoffanlage führen?",
+        options: [
+          "Die Cetanzahl des Kraftstoffes ist zu niedrig.",
+          "Es wurde mit zu niedriger Betriebstemperatur des Motors gefahren.",
+          "Die Oktanzahl des Kraftstoffes ist zu hoch.",
+          "Durch Paraffinausscheidung des Dieselkraftstoffes verstopfen die Filter."
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 73
+        question: "Wie kann die Paraffinausscheidung des Dieselkraftstoffes verhindert werden?",
+        options: [
+          "Benzin als Fließverbesserer beifügen",
+          "im Winter mit Winterdiesel fahren",
+          "häufig mit halbvollem Tank fahren",
+          "dem Diesel Additive beimischen",
+          "durch den Einbau einer Kraftstoff-Wärme-Pumpe"
+        ],
+        correctIndexes: [1, 3, 4] // B + D + E
+      },
+      {
+        // 74
+        question: "Welche Fahrwiderstände wirken sich auf den Kraftstoffverbrauch aus?",
+        options: [
+          "elektrischer Widerstand",
+          "Kohleschicht-Widerstand",
+          "Rollwiderstand",
+          "Ohmscher Widerstand",
+          "Luftwiderstand"
+        ],
+        correctIndexes: [2, 4] // C + E
+      },
+      {
+        // 75
+        question: "Was erhöht den Kraftstoffverbrauch?",
+        options: [
+          "rechtzeitiges Hochschalten",
+          "ständiger Einsatz der Motorbremse",
+          "zu geringer Reifendruck auf der Vorderachse",
+          "Einsatz von synthetischem Motoröl"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 76
+        question: "Wie kann man Kraftstoff einsparen?",
+        options: [
+          "möglichst spätes Schalten",
+          "nie schneller als 50 km/h fahren",
+          "bergab ohne Gang fahren",
+          "Rollphasen nutzen"
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 77
+        question: "Was beeinflusst den Kraftstoffverbrauch eines Fahrzeugs?",
+        options: [
+          "die Fahrweise des Fahrers",
+          "der richtige Reifendruck",
+          "die Einstellung des Lenkrads",
+          "die Sitzeinstellung",
+          "die ordnungsgemäße Ladungssicherung"
+        ],
+        correctIndexes: [0, 1] // A + B
+      },
+      {
+        // 78
+        question: "Welche Aussage trifft auf einen nach Herstellerangaben eingestellten Reifenluftdruck zu?",
+        options: [
+          "Die Lebensdauer des Reifens ist am niedrigsten.",
+          "Die Lebensdauer des Reifens ist am höchsten.",
+          "Der Reifendruck hat keine Auswirkung auf das Fahrverhalten.",
+          "Der Reifendruck kann ohne Auswirkungen bis zu einem Bar von den Herstellerangaben abweichen."
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 79
+        question: "Welchen Fahrwiderstand kann man durch regelmäßige Wartung beeinflussen?",
+        options: [
+          "Bremswiderstand",
+          "Rollwiderstand",
+          "Steigungswiderstand",
+          "Beschleunigungswiderstand"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 80
+        question: "Wie beschleunigen Sie ein Fahrzeug mit Schaltgetriebe schnell und wirtschaftlich?",
+        options: [
+          "beim Schalten möglichst Gänge überspringen",
+          "Beschleunigung mit halber Motorlast und Schalten mit hoher Drehzahl",
+          "die Gänge möglichst vollständig ausfahren - im roten Bereich des Drehzahlmessers schalten",
+          "Beschleunigung mit voller Motorlast und maximaler Drehzahl in kurzen Schaltsprüngen"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 81
+        question: "Welche der Aussage trifft auf eine wirtschaftliche Fahrweise zu?",
+        options: [
+          "Mit einer wirtschaftlichen Fahrweise reduziert man den Kraftstoffverbrauch.",
+          "Wenn man viel schaltet und bremst, dann reduziert man den Fahrzeugverschleiß und damit die Reparatur- und Wartungskosten.",
+          "Eine wirtschaftliche Fahrweise verlängert die Fahrzeiten.",
+          "Eine wirtschaftliche Fahrweise erhöht leicht den Reifenverschleiß im Anhängerbetrieb."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 82
+        question: "In welcher Situation kann der Fahrer eines Kraftfahrzeuges auf höhere Drehzahlen verzichten?",
+        options: [
+          "Er fährt auf eine größere Steigung zu.",
+          "Er will überholen.",
+          "Er rollt auf ebener Landstraße dahin.",
+          "Er befindet sich im schweren Gelände."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 83
+        question: "In welcher Situation ist ein Schaltvorgang in der Regel nicht erforderlich?",
+        options: [
+          "Sie fahren auf eine größere Steigung zu.",
+          "Sie wollen überholen.",
+          "Sie fahren mit Ihrem Fahrzeug auf ebener Landstraße.",
+          "Sie befinden sich in schwerem Gelände."
+        ],
+        correctIndexes: [2] // C
+      },
+      // 84 & 85: offene Rechenaufgabe (2 t/Lademeter), HTML-quiz'te şimdilik yok
+      {
+        // 86
+        question: "Was ist auf Steigungsstrecken bei glatter Fahrbahn besonders zu beachten?",
+        options: [
+          "Der Lkw sollte unabhängig vom Lastverteilungsplan so beladen werden, dass mindestens 65 % der Gesamtmasse auf die gelenkten Räder entfallen, um ein Untersteuern zu vermeiden.",
+          "Der Fahrer sollte rechtzeitig Traktionshilfen zuschalten, ggf. Schneeketten rechtzeitig auflegen und ein Schalten am Berg möglichst vermeiden.",
+          "Es sind rechtzeitig Schneeketten anzulegen und die Motordrehzahl sollte keinesfalls weniger als 1.700 1/min betragen. Die Beladung des LKW sollte nur auf den angetriebenen Achsen erfolgen.",
+          "Fahrer von modernen Kraftfahrzeugen müssen nichts Besonderes beachten, da die Elektronik in jedem Fall das Fahrzeug fahrstabil hält."
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 87
+        question: "Wie verändert sich der Fahr-Radius in einer Kurve mit eingelegter Differentialsperre?",
+        options: [
+          "Er verkleinert sich.",
+          "Eine Kurvenfahrt mit eingelegten Sperren ist nicht möglich.",
+          "Er vergrößert sich.",
+          "Er bleibt gleich."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 88
+        question: "Bei schlechtem Wetter wird die Unfallgefahr größer. Wie kann man hier die Unfallgefahr verringern?",
+        options: [
+          "Geschwindigkeit anpassen, bei dichtem Nebel Sicherheitsabstand zum Vordermann verringern",
+          "Geschwindigkeit anpassen, bei Sichtweite unter 100 m Nebelschlussleuchte einschalten",
+          "Sicherheitsabstand vergrößern, Geschwindigkeit anpassen, Aufmerksamkeit erhöhen",
+          "Sicherheitsabstand vergrößern, Geschwindigkeit anpassen, Aufmerksamkeit verringern",
+          "Sicherheitsabstand vergrößern, Geschwindigkeit verringern, bei Nebel öfter Scheibenwischer betätigen"
+        ],
+        correctIndexes: [2, 4] // C + E
+      },
+      {
+        // 89
+        question: "Welche Vorschrift regelt die Verantwortung des Kraftfahrers bei der Fahrzeugbeladung?",
+        options: [
+          "Güterkraftverkehrsgesetz (GüKG)",
+          "Fahrpersonalverordnung (FPersV)",
+          "Straßenverkehrs-Ordnung (StVO)",
+          "Arbeitszeitgesetz (ArbZG)"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 90
+        question: "Die Sicherung der Ladung ist sehr wichtig. Wer ist verantwortlich, dass die Ladung ausreichend gesichert ist?",
+        options: [
+          "alle, die am Transport beteiligt sind",
+          "nur der Fahrer",
+          "nur der Verlader",
+          "Fahrer und Verlader"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 91
+        question: "Sie haben einen Anhänger angekuppelt. Woran erkennen Sie, dass der Vorgang abgeschlossen ist?",
+        options: [
+          "Die Deichsel steckt gerade im Kupplungsmaul.",
+          "Das Bremsventil steht auf „Lösen\".",
+          "Das Handbremsseil an der Deichsel ist locker und schlaff.",
+          "Der Signalstift ist im Kupplungskopf nicht mehr zu sehen."
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 92
+        question: "An einem Lkw ist die Fliehkraft größer als die Seitenführungskräfte der Reifen. Was kann passieren?",
+        options: [
+          "Das Fahrzeug kann schleudern oder ausbrechen.",
+          "Der Luftwiderstand und damit der Kraftstoffverbrauch werden größer.",
+          "Das Mehrkreisschutzventil greift ein.",
+          "Der Rollwiderstand erhöht sich."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 93
+        question: "Wie ändert sich die Belastung der Vorderachse beim Bremsen?",
+        options: [
+          "Es gibt keine Änderung hinsichtlich der Belastung.",
+          "Sie wird entlastet.",
+          "Sie wird belastet.",
+          "Vorderachse und Hinterachse werden gleich belastet."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 94
+        question: "Wie nennt man die beim Bremsen an den Achsen auftretende Gewichtsverlagerung?",
+        options: [
+          "Überladung",
+          "Dauerbelastung",
+          "dynamische Achslastverlagerung",
+          "Es gibt beim Bremsen keine Gewichtsverlagerung an den Achsen."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 95
+        question: "Wie nennt man die beim Bremsen auftretende Gewichtsverlagerung an den Achsen?",
+        options: [
+          "Überladung",
+          "Dauerbelastung",
+          "dynamische Achslastverlagerung",
+          "beim Bremsen findet keine Gewichtsverlagerung an den Achsen statt"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 96
+        question: "Fahrzeug mit Schaltgetriebe: Wie soll man auf einer glatten Fahrbahn anfahren?",
+        options: [
+          "niedriger Gang mit möglichst hohen Drehzahlen; dabei die Kupplung schleifen lassen",
+          "niedriger Gang mit niedrigsten Drehzahlen, dabei die Kupplung möglichst sanft und dosiert betätigen",
+          "mittlerer Gang mit hoher Drehzahl und schleifender Kupplung",
+          "höchste Drehzahl im höchsten Gang"
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 97
+        question: "Wie ändert sich die Belastung der Hinterachse beim Bremsen?",
+        options: [
+          "Es gibt keine Änderung hinsichtlich der Belastung.",
+          "Sie wird entlastet.",
+          "Sie wird belastet.",
+          "Vorderachse und Hinterachse werden gleich belastet."
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 98
+        question: "Wie nennt man die beim Bremsen an den Achsen auftretende Gewichtsverlagerung?",
+        options: [
+          "Überladung",
+          "Dauerbelastung",
+          "dynamische Achslastverlagerung",
+          "Bremsfading"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 99
+        question: "Sie sollen einen Stahlblock mit ca. 12.000 kg von Ihrer Werkshalle über eine öffentliche Straße zu einer 3 km entfernten Bahnverladestation mit Ihrem Lkw transportieren. Müssen Sie den Stahlblock sichern?",
+        options: [
+          "Der Stahlblock ist so schwer, dass er nicht verrutschen kann.",
+          "Die Strecke auf öffentlicher Straße ist so kurz, dass eine Sicherung nicht nötig ist.",
+          "Der Stahlblock muss wie jedes andere Gut gesichert werden.",
+          "Eine Sicherung ist erst ab Bahn-Verladung erforderlich."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 102
+        question: "Sie transportieren leichte Ladungen (z. B. Styropor-Platten). Sie fahren ein Fahrzeug mit offenem Pritschenaufbau. Wie sichern Sie die Ladung?",
+        options: [
+          "mit einem Abdecknetz",
+          "mit 4 Spanngurten über Kreuz",
+          "mit Spannketten und Antirutschmatten",
+          "Es ist keine besondere Sicherung erforderlich."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 103
+        question: "Welche Aussagen zum Verwenden von Antirutschmatten sind richtig?",
+        options: [
+          "Antirutschmatten dürfen bei der Berechnung der Zurrmittel nicht berücksichtigt werden.",
+          "Antirutschmatten sind bei rollender Ladung Pflicht.",
+          "Durch Verwendung von Antirutschmatten wird der Gleit-Reibbeiwert erhöht.",
+          "Antirutschmatten dürfen nur bei Gütern ab 500 kg verwendet werden.",
+          "Das Ladegut wird damit gegen Verrutschen gesichert."
+        ],
+        correctIndexes: [2, 4] // C + E
+      },
+      {
+        // 104
+        question: "Welche Aussage zum Direktzurren ist richtig?",
+        options: [
+          "Ladegüter werden direkt gestaut. Sie füllen die Ladefläche fast ohne Lücken.",
+          "Ladegüter werden mit Zurrmitteln überspannt.",
+          "Die Zurrmittel werden dabei im geraden Zug eingesetzt.",
+          "Ladegüter werden direkt auf die Ladefläche gepresst."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 105
+        question: "Sie haben Ihr Fahrzeug formschlüssig ohne Hilfsmittel beladen. Was sichert die Ladung gegen Verrutschen?",
+        options: [
+          "die Bordwände",
+          "die Zurrgurte",
+          "vorsichtiges Fahren",
+          "das Gewicht der Ladung"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 106
+        question: "Sie sichern ein Ladegut durch lückenloses Verstauen. Welche Sicherungsart ist das?",
+        options: [
+          "kraftschlüssige Sicherung",
+          "formschlüssige Sicherung",
+          "kombinierte Sicherung",
+          "keine Ladungssicherung"
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 107
+        question: "Sie sichern ein Ladegut durch Diagonalzurren. Wodurch wird die Sicherungswirkung hauptsächlich bestimmt?",
+        options: [
+          "Ladungsgewicht",
+          "Reibungskraft der Ladefläche",
+          "Höhe der zulässigen Zugkraft des Zurrmittels",
+          "Anpresskraft"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 108
+        question: "Was für eine Sicherungsart ist Niederzurren?",
+        options: [
+          "kraftschlüssige Sicherung",
+          "kombinierte Sicherung",
+          "formschlüssige Sicherung",
+          "besondere Art des Formschlusses"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 109
+        question: "Welche Aufgabe haben Kantengleiter beim Niederzurren? Kantengleiter ...",
+        options: [
+          "erhöhen die maximal zulässige Dehnung des Gurtbandes.",
+          "gewährleisten eine gleichmäßige Anpresskraft.",
+          "verhindern ein Verrutschen des Ladegutes.",
+          "Kantengleiter sollen ausschließlich das Ladegut schützen."
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 110
+        question: "Was ist eine rein kraftschlüssige Form der Ladungssicherung?",
+        options: [
+          "Niederzurren",
+          "Lashing",
+          "Schrägzurren",
+          "Diagonalzurren"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 111
+        question: "Sie benutzen das Gurtband mit einer Ratsche. Wie viele Windungen Gurtband soll die Wickelachse der Ratsche mindestens und höchstens haben?",
+        options: [
+          "1,5 bis maximal 3,5 Windungen",
+          "1 bis maximal 3 Windungen",
+          "1,5 bis maximal 2,5 Windungen",
+          "1,5 bis maximal 3 Windungen"
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 114
+        question: "Welche Aussagen zu den Angaben auf dem Zurrgurtetikett sind richtig?",
+        options: [
+          "Die maximale Vorspannkraft beträgt 5.000 daN.",
+          "Die Kraft, die zum Spannen der Ratsche aufgebracht werden muss, beträgt 450 daN.",
+          "Der Hebel darf maximal mit einer Kraft von 5.000 daN gezogen werden.",
+          "Die maximale Zurrkraft in geradem Zug beträgt 2.500 daN.",
+          "Die maximale Zurrkraft für Umspannen ist 5.000 daN."
+        ],
+        correctIndexes: [3, 4] // D + E
+      },
+      {
+        // 115
+        question: "Was bedeutet die Angabe \"LC\" auf den Etiketten von Zurrmitteln?",
+        options: [
+          "\"LC\" ist das maximale Gewicht der Ladung, welches man mit Zurrmitteln sichern darf.",
+          "\"LC\" ist die englische Abkürzung für die maximale Dehnung des Zurrmittels unter Last.",
+          "\"LC\" ist das Prüfzeichen für ein in Europa zugelassenes Zurrmittel.",
+          "\"LC\" ist die maximale Kraft im direkten Zug, die ein Zurrmittel aushalten muss."
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 117
+        question: "Ein LKW-Fahrer möchte einen Mitnahme-Stapler im öffentlichen Verkehrsraum benutzen. Welche Aussage ist richtig?",
+        options: [
+          "Man muss nichts beachten.",
+          "Der Fahrer muss den Führerschein Klasse CE haben.",
+          "Der Fahrer braucht nur den Flurförderschein, wenn das Verladepersonal an der Ladestelle eine Einweisung macht.",
+          "Der Fahrer braucht den Flurförderschein und der Stapler muss nach StVZO ausgerüstet sein."
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 118
+        question: "Der LKW-Fahrer möchte einen Mitnahme-Stapler im öffentlichen Verkehrsraum benutzen. Welche Aussagen sind richtig?",
+        options: [
+          "Man muss nichts beachten.",
+          "Der Fahrer muss den Führerschein Klasse CE haben.",
+          "Der Fahrer braucht nur den Flurförderschein, wenn das Verladepersonal an der Ladestelle eine Einweisung macht.",
+          "Der Fahrer braucht den Flurförderschein.",
+          "der Stapler muss nach StVZO ausgerüstet sein."
+        ],
+        correctIndexes: [3, 4] // D + E
+      },
+      {
+        // 119
+        question: "Welche Voraussetzungen müssen erfüllt sein, um einen Ladekran zu bedienen?",
+        options: [
+          "Es genügt der Fahrerausweis/die Befähigung zum Führen von Gabelstaplern.",
+          "Zum Nachweis reicht der Führerschein der Klasse C1E.",
+          "Man benötigt den Befähigungsnachweis als Kranführer.",
+          "Es ist eine Einweisung zur Führung oder Instandhaltung des Ladekranes erforderlich.",
+          "das Mindestalter von 21 Jahren"
+        ],
+        correctIndexes: [2, 3] // C + D
+      },
+      {
+        // 120
+        question: "Sie transportieren Schüttgüter. Wie sichern Sie die Ladung richtig? Absicherung der Ladung ...",
+        options: [
+          "mit Spanngurten",
+          "durch richtiges Einstellen des Dachspoilers",
+          "mit einer Plane",
+          "durch das Unterlegen von Antirutschmatten",
+          "durch ein Netz"
+        ],
+        correctIndexes: [2, 4] // C + E
+      },
+      {
+        // 121
+        question: "Welche Getriebeübersetzung ist wirtschaftlich?",
+        options: [
+          "hohe Motordrehzahl - hohe Geschwindigkeit",
+          "niedrige Motordrehzahl - hohe Geschwindigkeit",
+          "hohe Motordrehzahl - niedrige Geschwindigkeit",
+          "jede, weil Dieselmotoren ein ausreichend hohes Drehmoment haben"
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 122
+        question: "Welche Aufgabe hat ein Verteilergetriebe im Kraftstrang?",
+        options: [
+          "Es verhindert das Durchdrehen der Antriebsräder.",
+          "Es verteilt die Antriebskraft zwischen Lkw und Anhänger",
+          "Es verteilt die Antriebskräfte auf mehrere Achsen.",
+          "Es verteilt die Kraft auf die Räder einer Achse."
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 123
+        question: "Fahrzeug mit Allradantrieb: Was sind Quersperren und Längssperren?",
+        options: [
+          "Gelände-Übersetzungen von Lkws",
+          "Schalthilfen im Getriebe",
+          "Differenzialsperren einer Achse und zwischen Achsen",
+          "andere Bezeichnungen für ABS"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 124
+        question: "Ihr Fahrzeug hat ein halbautomatisches Getriebe mit einer hydraulischen Kupplung. Wie wird die Kraft übertragen?",
+        options: [
+          "mithilfe von Bremsscheiben",
+          "mit Planetengetrieben",
+          "mit Bremsflüssigkeit",
+          "mit speziellem Hydrauliköl"
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 126
+        question: "Sie haben eine Fahrzeug-Kombination aus einer 2-achsigen Sattelzugmaschine und einem 3-achsigen Sattelanhänger (kein Kombiverkehr). Welches höchstzulässige Gesamtgewicht darf die Fahrzeugkombination haben?",
+        options: [
+          "40 t",
+          "38 t",
+          "41 t",
+          "44 t"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 128
+        question: "Sie wollen die Nutzlast eines Fahrzeuges berechnen. Welche Angaben brauchen Sie?",
+        options: [
+          "Fahrzeuglänge, -höhe und -breite",
+          "den Radstand",
+          "zulässige Gesamtmasse",
+          "Tragfähigkeit der Reifen",
+          "Leermasse"
+        ],
+        correctIndexes: [2, 4] // C + E
+      },
+      {
+        // 129
+        question: "Eine Fahrzeugkombination hat eine zulässige Gesamtmasse von 40 t. Wie viele Achsen muss die Fahrzeugkombination mindestens haben?",
+        options: [
+          "2 Achsen",
+          "3 Achsen",
+          "4 Achsen",
+          "5 Achsen"
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 130
+        question: "Sie wollen die Nutzlast eines Fahrzeuges berechnen. Welche Angaben brauchen Sie?",
+        options: [
+          "Fahrzeuglänge, -höhe und -breite",
+          "Gewicht der Zugmaschine und des Anhängers bzw. Sattelaufliegers",
+          "Zulässige Gesamtmasse und Leermasse",
+          "Tragfähigkeit der Reifen und Leermasse"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 131
+        question: "Sie haben eine Fahrzeug-Kombination aus einer 2-achsigen Sattelzugmaschine und einem 2-achsigen Sattelanhänger. Welches höchstzulässige Gesamtgewicht darf die Fahrzeugkombination haben?",
+        options: [
+          "36 t",
+          "40 t",
+          "38 t",
+          "42 t"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 136
+        question: "Was ist beim Laden von Gütern grundsätzlich zu beachten?",
+        options: [
+          "Beschädigte Versandstücke muss man immer zuerst verladen.",
+          "Schwere Ladegüter darf man nicht auf leichte Ladegüter stapeln.",
+          "Die Beladung muss man immer von der hinteren Ladebordwand her beginnen.",
+          "Stapeln hat immer Vorrang vor dem formschlüssigen Ausfüllen der Ladefläche."
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 137
+        question: "Sie machen eine Abfahrtskontrolle. Woran erkennen Sie, ob das zulässige Gesamtgewicht Ihres Fahrzeugs überschritten ist?",
+        options: [
+          "Der Motor lässt sich schwer starten.",
+          "Die Nutzlast ist geringer als das angegebene Gewicht der Ladung im Beförderungspapier.",
+          "Das Sicherungsventil lässt sich nicht mehr lösen.",
+          "Der Abstand zwischen Reifen und Kotflügel ist sehr gering.",
+          "Die Druckluftbremsanlage erreicht den Abschaltdruck nicht mehr."
+        ],
+        correctIndexes: [3, 4] // D + E
+      },
+      {
+        // 139
+        question: "Welches Dokument enthält die zulässige Achslast Ihres Fahrzeugs?",
+        options: [
+          "der Frachtbrief",
+          "das Bremsenprüfbuch",
+          "die Zulassungsbescheinigung Teil I",
+          "die von der Genehmigungsbehörde erteilten Güterkraftverkehrserlaubnis"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 141
+        question: "Was erhöht die Kippgefahr bei einem Lastzug?",
+        options: [
+          "Reifen mit geringer Profiltiefe, dadurch schlechter Kraftschluss zwischen Reifen und Fahrbahn",
+          "unterschiedliche Güter mit niedrigem Ladungsschwerpunkt, die auf der gesamten Ladefläche verteilt sind",
+          "angepasste Geschwindigkeit und hohe Gewichtsauslastung des Fahrzeuges",
+          "hoher Schwerpunkt und/oder einseitige Beladung"
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 142
+        question: "Welche Belastung muss eine Stirnwand aushalten, ohne bleibende Verformung?",
+        options: [
+          "40% der Nutzlast",
+          "40% der Nutzlast, aber maximal 5.000 daN",
+          "maximal 3.000 daN, bei Sattelkraftfahrzeugen 6.000 daN",
+          "maximal 6.000 daN"
+        ],
+        correctIndexes: [1] // B
+      },
+      {
+        // 143
+        question: "Ihr Unternehmen hat mit einem Empfänger Palettentausch vereinbart. Der Empfänger möchte eine defekte Tauschpalette zurückgeben. Wie verhalten Sie sich richtig?",
+        options: [
+          "Die defekte Palette kann man annehmen, weil leicht beschädigte Paletten genauso stabil und tragfähig sind wie unbeschädigte.",
+          "Die defekte Palette verlädt man getrennt von den unbeschädigten Paletten, damit sie für eine Reparatur schneller erkennbar ist.",
+          "Die defekte Palette stellt man in die Mitte eines Paletten-Stapels, damit die Beschädigung beim nächsten Tausch nicht auffällt.",
+          "Ich weise den Empfänger darauf hin, dass ein Anspruch auf Rückgabe unbeschädigter Paletten besteht."
+        ],
+        correctIndexes: [3] // D
+      },
+      {
+        // 151
+        question: "Welches Eigengewicht ist für eine EUR-Flachpalette (Europalette) anzusetzen?",
+        options: [
+          "5 kg",
+          "15 kg",
+          "25 kg",
+          "35 kg"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 152
+        question: "Sie fahren mit Ihrem Fahrzeug auf einer engen Straße, die an den Seiten überhängende Felsen hat. Was müssen Sie beachten?",
+        options: [
+          "Das Fahrzeug kann bei einer unebenen Fahrbahn ins Schwanken geraten und seitlich anschlagen.",
+          "Durch Engstellen soll man nicht fahren.",
+          "Durch Engstellen soll man schnell fahren, um den nachfolgenden Verkehr nicht zu behindern.",
+          "Wenn es zu eng wird, soll man das Fahrzeug wenden."
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 154
+        question: "Welche Funktion haben Fahrzeuggetriebe?",
+        options: [
+          "die Motordrehzahl auf die Antriebsachse übersetzen",
+          "die Motordrehzahl an die Fahrbahnoberfläche anpassen",
+          "den Kraftstoffverbrauch steuern",
+          "Nebenantriebe betätigen"
+        ],
+        correctIndexes: [0] // A
+      },
+      {
+        // 155
+        question: "Sie wollen die Nutzlast eines Fahrzeuges errechnen. Welche Angaben brauchen Sie?",
+        options: [
+          "Motorleistung und Drehzahl",
+          "Luft- und Rollwiderstand",
+          "Zulässige Gesamtmasse",
+          "Tragfähigkeit der Reifen",
+          "Leermasse"
+        ],
+        correctIndexes: [2, 3, 4] // C + D + E
+      },
+      {
+        // 156
+        question: "Sie wollen die Nutzlast eines Fahrzeuges errechnen. Welche Angaben brauchen Sie?",
+        options: [
+          "Motorleistung und Drehzahl",
+          "Luft- und Rollwiderstand",
+          "Zulässige Gesamtmasse und Leermasse",
+          "Tragfähigkeit der Reifen und Leermasse"
+        ],
+        correctIndexes: [2] // C
+      },
+      {
+        // 157
+        question: "Wie wirkt sich ein hoher Schwerpunkt auf das Fahrverhalten des Fahrzeugs aus?",
+        options: [
+          "Die Kurvengeschwindigkeit kann ohne Risiko erhöht werden.",
+          "Durch den hohen Schwerpunkt wird das Fahrzeug schneller.",
+          "Durch einen hohen Schwerpunkt neigt das Fahrzeug bei einer Kurvenfahrt eher zum Umkippen.",
+          "In einer Kurvenfahrt verlagert sich der Schwerpunkt zur Kurveninnenseite."
+        ],
+        correctIndexes: [2] // C
+      }
+    ];
+
+    let currentIndex = 0;
+
+    const qNumberEl = document.getElementById("q-number");
+    const qTextEl = document.getElementById("q-text");
+    const qOptionsEl = document.getElementById("q-options");
+    const feedbackEl = document.getElementById("feedback");
+    const correctAnswerEl = document.getElementById("correct-answer");
+    const checkBtn = document.getElementById("check-btn");
+    const nextBtn = document.getElementById("next-btn");
+    const progressPill = document.getElementById("progress-pill");
+
+    function renderQuestion() {
+      const q = questions[currentIndex];
+      if (!q) {
+        qNumberEl.textContent = "Aferin olacan 🎉";
+        qTextEl.textContent = "Şimdilik bitti idare et.";
+        qOptionsEl.innerHTML = "";
+        checkBtn.disabled = true;
+        nextBtn.disabled = true;
+        feedbackEl.textContent = "";
+        correctAnswerEl.textContent = "";
+        progressPill.textContent = `Toplam soru: ${questions.length}`;
+        return;
+      }
+
+      qNumberEl.textContent = `Soru ${currentIndex + 1} / ${questions.length}`;
+      qTextEl.textContent = q.question;
+      qOptionsEl.innerHTML = "";
+      feedbackEl.textContent = "";
+      feedbackEl.className = "feedback";
+      correctAnswerEl.textContent = "";
+
+      const isMulti = q.correctIndexes.length > 1;
+
+      q.options.forEach((opt, idx) => {
+        const li = document.createElement("li");
+        const label = document.createElement("label");
+        label.className = "option";
+
+        const input = document.createElement("input");
+        input.type = isMulti ? "checkbox" : "radio";
+        input.name = isMulti ? `answer-${currentIndex}` : "answer-single";
+        input.value = idx;
+
+        const letter = String.fromCharCode(65 + idx);
+        const textSpan = document.createElement("span");
+        textSpan.textContent = `${letter}) ${opt}`;
+
+        label.appendChild(input);
+        label.appendChild(textSpan);
+        li.appendChild(label);
+        qOptionsEl.appendChild(li);
+      });
+
+      checkBtn.disabled = false;
+      nextBtn.disabled = true;
+
+      progressPill.textContent = `Aktif: ${currentIndex + 1}/${questions.length}`;
+    }
+
+    function getSelectedIndexes() {
+      const inputs = qOptionsEl.querySelectorAll("input");
+      const selected = [];
+      inputs.forEach((inp, idx) => {
+        if (inp.checked) selected.push(idx);
+      });
+      return selected;
+    }
+
+    function arraysEqualAsSets(a, b) {
+      if (a.length !== b.length) return false;
+      const sa = [...a].sort((x, y) => x - y);
+      const sb = [...b].sort((x, y) => x - y);
+      for (let i = 0; i < sa.length; i++) {
+        if (sa[i] !== sb[i]) return false;
+      }
+      return true;
+    }
+
+    checkBtn.addEventListener("click", () => {
+      const q = questions[currentIndex];
+      if (!q) return;
+
+      const selected = getSelectedIndexes();
+      if (selected.length === 0) {
+        feedbackEl.textContent = "En az bir şık seç AQ.";
+        feedbackEl.className = "feedback err";
+        return;
+      }
+
+      const correct = q.correctIndexes;
+
+      if (arraysEqualAsSets(selected, correct)) {
+        feedbackEl.textContent = "Aferim ✅";
+        feedbackEl.className = "feedback ok";
+        correctAnswerEl.textContent = "";
+        checkBtn.disabled = true;
+        nextBtn.disabled = true;
+        setTimeout(() => {
+          currentIndex++;
+          renderQuestion();
+        }, 600);
+      } else {
+        feedbackEl.textContent = "Yanlış ❌";
+        feedbackEl.className = "feedback err";
+        const answerText = correct
+          .map((idx) => {
+            const letter = String.fromCharCode(65 + idx);
+            return `${letter}) ${q.options[idx]}`;
+          })
+          .join(" | ");
+        correctAnswerEl.textContent = `Doğru cevap(lar): ${answerText}`;
+        nextBtn.disabled = false;
+      }
+    });
+
+    nextBtn.addEventListener("click", () => {
+      currentIndex++;
+      renderQuestion();
+    });
+
+    renderQuestion();
+  </script>
+</body>
+</html>
