@@ -2,40 +2,42 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>2 ye geçtin </title>
+  <title>2 ye geçtin</title>
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f5;
+      background: #000000;
+      color: #f5f5f5;
       margin: 0;
       padding: 0;
     }
     .app {
       max-width: 900px;
       margin: 30px auto;
-      background: #ffffff;
+      background: #111111;
       border-radius: 12px;
       padding: 24px 24px 32px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.8);
     }
     h1 {
       margin-top: 0;
       font-size: 1.6rem;
       text-align: center;
+      color: #ffffff;
     }
     .meta {
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.9rem;
-      color: #555;
+      color: #dddddd;
       margin-bottom: 12px;
       flex-wrap: wrap;
       gap: 8px;
     }
     .progress-bar {
       flex: 1;
-      background: #eee;
+      background: #333333;
       border-radius: 999px;
       height: 8px;
       margin: 0 12px;
@@ -49,18 +51,20 @@
     }
     .question {
       display: none;
+      color: #f5f5f5;
     }
     .question.active {
       display: block;
     }
     .q-number {
       font-weight: 600;
-      color: #333;
+      color: #ffffff;
       margin-bottom: 4px;
     }
     .q-text {
       margin-bottom: 16px;
       line-height: 1.4;
+      color: #f0f0f0;
     }
     .options {
       display: grid;
@@ -70,22 +74,23 @@
     .option {
       text-align: left;
       border-radius: 8px;
-      border: 1px solid #ddd;
+      border: 1px solid #444444;
       padding: 10px 12px;
-      background: #fafafa;
+      background: #1e1e1e;
       cursor: pointer;
       font-size: 0.95rem;
       transition: background 0.15s, border-color 0.15s, transform 0.05s;
+      color: #f5f5f5;
     }
     .option:hover {
-      background: #f0f0f0;
+      background: #2a2a2a;
     }
     .option.correct {
-      background: #e6f5ea;
+      background: #1b5e20;
       border-color: #4caf50;
     }
     .option.wrong {
-      background: #fde7e7;
+      background: #6d1b1b;
       border-color: #f44336;
     }
     .feedback {
@@ -94,10 +99,10 @@
       margin-bottom: 12px;
     }
     .feedback.correct {
-      color: #2e7d32;
+      color: #81c784;
     }
     .feedback.wrong {
-      color: #c62828;
+      color: #ef9a9a;
     }
     .nav {
       display: flex;
@@ -123,8 +128,8 @@
       cursor: default;
     }
     .nav button.secondary {
-      background: #e0e0e0;
-      color: #333;
+      background: #424242;
+      color: #ffffff;
     }
     .score {
       font-weight: 600;
@@ -133,12 +138,12 @@
     /* Soru atlama menüsü */
     .jump-wrapper {
       margin-top: 18px;
-      border-top: 1px solid #eee;
+      border-top: 1px solid #333333;
       padding-top: 10px;
     }
     .jump-title {
       font-size: 0.85rem;
-      color: #666;
+      color: #bbbbbb;
       margin-bottom: 6px;
     }
     .jump-nav {
@@ -150,10 +155,11 @@
       min-width: 30px;
       padding: 4px 6px;
       border-radius: 6px;
-      border: 1px solid #ccc;
-      background: #fafafa;
+      border: 1px solid #555555;
+      background: #1f1f1f;
       font-size: 0.8rem;
       cursor: pointer;
+      color: #f5f5f5;
     }
     .jump-nav button.active {
       background: #1976d2;
@@ -286,7 +292,7 @@
   </div>
 
   <!-- Frage 11 -->
-  <div class="question" data-index="7" data-correct="A">
+  <div class="question" data-index="7" data-correct="D">
     <div class="q-number">11. (6476) – 1 Punkt</div>
     <div class="q-text">
       Arbeitszeitgesetz: Um wie viele Stunden kann die regelmäßige wöchentliche Arbeitszeit für Fahrer maximal verlängert werden?
@@ -378,7 +384,7 @@
   </div>
 
   <!-- Frage 17 -->
-  <div class="question" data-index="13" data-correct="B">
+  <div class="question" data-index="13" data-correct="A">
     <div class="q-number">17. (68717) – 1 Punkt</div>
     <div class="q-text">
       Ihre Fahrerkarte ist abgelaufen. Sie hatten rechtzeitig vor dem Ablauf eine neue Fahrerkarte erhalten.
@@ -560,7 +566,7 @@
   </div>
 
   <!-- Frage 28 -->
-  <div class="question" data-index="24" data-correct="C">
+  <div class="question" data-index="24" data-correct="B">
     <div class="q-number">28. (68605) – 1 Punkt</div>
     <div class="q-text">
       EG-Sozialvorschriften: Lenkzeit in der 1. Woche: 47 Stunden, Lenkzeit in der 2. Woche: 30 Stunden. 
@@ -576,7 +582,7 @@
   </div>
 
   <!-- Frage 29 -->
-  <div class="question" data-index="25" data-correct="A">
+  <div class="question" data-index="25" data-correct="A,C">
     <div class="q-number">29. (68600) – 2 Punkte</div>
     <div class="q-text">
       Sie wollen eine Fahrerkarte beantragen. Welche Unterlagen müssen Sie vorlegen?
@@ -607,7 +613,7 @@
   </div>
 
   <!-- Frage 31 -->
-  <div class="question" data-index="27" data-correct="B">
+  <div class="question" data-index="27" data-correct="B,E">
     <div class="q-number">31. (68284) – 2 Punkte</div>
     <div class="q-text">
       Fahrtenschreiber: Welche Angaben zu Ihrer Person müssen Sie auf dem Schaublatt eintragen?
@@ -1023,127 +1029,127 @@
     <div class="feedback" id="fb-52"></div>
   </div>
 
-<!-- Frage 60 -->
-<div class="question" data-index="53" data-correct="A">
-  <div class="q-number">60. (68647) – 1 Punkt</div>
-  <div class="q-text">
-    Für welche Zeit gilt das Sonn- und Feiertagsfahrverbot gemäß § 30 Straßenverkehrsordnung (StVO)?
+  <!-- Frage 60 -->
+  <div class="question" data-index="53" data-correct="C">
+    <div class="q-number">60. (68647) – 1 Punkt</div>
+    <div class="q-text">
+      Für welche Zeit gilt das Sonn- und Feiertagsfahrverbot gemäß § 30 Straßenverkehrsordnung (StVO)?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">an Sonn- und Feiertagen von 0 bis 24 Uhr</button>
+      <button class="option" data-value="B">an Sonn- und Feiertagen von 13 bis 20 Uhr</button>
+      <button class="option" data-value="C">an Sonn- und Feiertagen von 0 bis 22 Uhr</button>
+      <button class="option" data-value="D">an Samstagen ab 22 Uhr bis sonntags 0 Uhr</button>
+    </div>
+    <div class="feedback" id="fb-53"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">an Sonn- und Feiertagen von 0 bis 24 Uhr</button>
-    <button class="option" data-value="B">an Sonn- und Feiertagen von 13 bis 20 Uhr</button>
-    <button class="option" data-value="C">an Sonn- und Feiertagen von 0 bis 22 Uhr</button>
-    <button class="option" data-value="D">an Samstagen ab 22 Uhr bis sonntags 0 Uhr</button>
-  </div>
-  <div class="feedback" id="fb-53"></div>
-</div>
 
-<!-- Frage 61 -->
-<div class="question" data-index="54" data-correct="D">
-  <div class="q-number">61. (68643) – 1 Punkt</div>
-  <div class="q-text">
-    Nach welchen Kriterien wird die Höhe der Straßenmaut berechnet?
+  <!-- Frage 61 -->
+  <div class="question" data-index="54" data-correct="D">
+    <div class="q-number">61. (68643) – 1 Punkt</div>
+    <div class="q-text">
+      Nach welchen Kriterien wird die Höhe der Straßenmaut berechnet?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">nach Achslasten und Zuladung</button>
+      <button class="option" data-value="B">zeitabhängig, nach gefahrenen Tagen</button>
+      <button class="option" data-value="C">nur nach gefahrenen Kilometern</button>
+      <button class="option" data-value="D">nach Schadstoffklassen, Anzahl der Achsen, Gewichtsklasse, Lärmbelastung und gefahrenen Kilometern</button>
+    </div>
+    <div class="feedback" id="fb-54"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">nach Achslasten und Zuladung</button>
-    <button class="option" data-value="B">zeitabhängig, nach gefahrenen Tagen</button>
-    <button class="option" data-value="C">nur nach gefahrenen Kilometern</button>
-    <button class="option" data-value="D">nach Schadstoffklassen, Anzahl der Achsen, Gewichtsklasse, Lärmbelastung und gefahrenen Kilometern</button>
-  </div>
-  <div class="feedback" id="fb-54"></div>
-</div>
 
-<!-- Frage 62 -->
-<div class="question" data-index="55" data-correct="B">
-  <div class="q-number">62. (68625) – 1 Punkt</div>
-  <div class="q-text">
-    Wie weit darf eine Ladung bei einem Einzelfahrzeug (ohne Anhänger) nach hinten hinausragen, wenn die Wegstrecke länger als 100 Kilometer ist?
+  <!-- Frage 62 -->
+  <div class="question" data-index="55" data-correct="B">
+    <div class="q-number">62. (68625) – 1 Punkt</div>
+    <div class="q-text">
+      Wie weit darf eine Ladung bei einem Einzelfahrzeug (ohne Anhänger) nach hinten hinausragen, wenn die Wegstrecke länger als 100 Kilometer ist?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">überhaupt nicht</button>
+      <button class="option" data-value="B">bis zu 1,5 m</button>
+      <button class="option" data-value="C">bis 2,5 m</button>
+      <button class="option" data-value="D">bis zu 3 m</button>
+    </div>
+    <div class="feedback" id="fb-55"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">überhaupt nicht</button>
-    <button class="option" data-value="B">bis zu 1,5 m</button>
-    <button class="option" data-value="C">bis 2,5 m</button>
-    <button class="option" data-value="D">bis zu 3 m</button>
-  </div>
-  <div class="feedback" id="fb-55"></div>
-</div>
 
-<!-- Frage 63 -->
-<div class="question" data-index="56" data-correct="C,D">
-  <div class="q-number">63. (68622) – 2 Punkte</div>
-  <div class="q-text">
-    Nach welchen Kriterien wird die Höhe der Straßen-Maut berechnet?
+  <!-- Frage 63 -->
+  <div class="question" data-index="56" data-correct="C,D">
+    <div class="q-number">63. (68622) – 2 Punkte</div>
+    <div class="q-text">
+      Nach welchen Kriterien wird die Höhe der Straßen-Maut berechnet?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">nach dem Transportgut</button>
+      <button class="option" data-value="B">nach der Transportzeit</button>
+      <button class="option" data-value="C">nach der Schadstoffklasse</button>
+      <button class="option" data-value="D">nach der Anzahl der Achsen</button>
+      <button class="option" data-value="E">nach den Tag- oder Nachtfahrten</button>
+    </div>
+    <div class="feedback" id="fb-56"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">nach dem Transportgut</button>
-    <button class="option" data-value="B">nach der Transportzeit</button>
-    <button class="option" data-value="C">nach der Schadstoffklasse</button>
-    <button class="option" data-value="D">nach der Anzahl der Achsen</button>
-    <button class="option" data-value="E">nach den Tag- oder Nachtfahrten</button>
-  </div>
-  <div class="feedback" id="fb-56"></div>
-</div>
 
-<!-- Frage 64 -->
-<div class="question" data-index="57" data-correct="D">
-  <div class="q-number">64. (68620) – 1 Punkt</div>
-  <div class="q-text">
-    An Sonn- und Feiertagen dürfen in der Zeit von 0 bis 22 Uhr bestimmte Fahrzeuge nicht fahren. Welche sind das?
+  <!-- Frage 64 -->
+  <div class="question" data-index="57" data-correct="D">
+    <div class="q-number">64. (68620) – 1 Punkt</div>
+    <div class="q-text">
+      An Sonn- und Feiertagen dürfen in der Zeit von 0 bis 22 Uhr bestimmte Fahrzeuge nicht fahren. Welche sind das?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">alle Lastkraftwagen unabhängig von der zulässigen Gesamtmasse</button>
+      <button class="option" data-value="B">alle Last- und Personenkraftwagen über 3,5 t Gesamtmasse</button>
+      <button class="option" data-value="C">Lastkraftwagen ab 12 t zulässiger Gesamtmasse</button>
+      <button class="option" data-value="D">Lastkraftwagen über 7,5 t sowie Lkw mit Anhänger</button>
+    </div>
+    <div class="feedback" id="fb-57"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">alle Lastkraftwagen unabhängig von der zulässigen Gesamtmasse</button>
-    <button class="option" data-value="B">alle Last- und Personenkraftwagen über 3,5 t Gesamtmasse</button>
-    <button class="option" data-value="C">Lastkraftwagen ab 12 t zulässiger Gesamtmasse</button>
-    <button class="option" data-value="D">Lastkraftwagen über 7,5 t sowie Lkw mit Anhänger</button>
-  </div>
-  <div class="feedback" id="fb-57"></div>
-</div>
 
-<!-- Frage 65 -->
-<div class="question" data-index="58" data-correct="B">
-  <div class="q-number">65. (68607) – 1 Punkt</div>
-  <div class="q-text">
-    Welche der folgenden Aussagen zum Werkverkehr ist falsch?
+  <!-- Frage 65 -->
+  <div class="question" data-index="58" data-correct="B">
+    <div class="q-number">65. (68607) – 1 Punkt</div>
+    <div class="q-text">
+      Welche der folgenden Aussagen zum Werkverkehr ist falsch?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Fahrer im Werkverkehr unterliegen dem BKrFQG.</button>
+      <button class="option" data-value="B">Eine Beförderung im Werkverkehr ist erlaubnispflichtig.</button>
+      <button class="option" data-value="C">Angestellte Fahrer im Werkverkehr unterliegen dem Arbeitszeitgesetz.</button>
+      <button class="option" data-value="D">Im Werkverkehr müssen Lenk- und Ruhezeiten eingehalten werden.</button>
+    </div>
+    <div class="feedback" id="fb-58"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">Fahrer im Werkverkehr unterliegen dem BKrFQG.</button>
-    <button class="option" data-value="B">Eine Beförderung im Werkverkehr ist erlaubnispflichtig.</button>
-    <button class="option" data-value="C">Angestellte Fahrer im Werkverkehr unterliegen dem Arbeitszeitgesetz.</button>
-    <button class="option" data-value="D">Im Werkverkehr müssen Lenk- und Ruhezeiten eingehalten werden.</button>
-  </div>
-  <div class="feedback" id="fb-58"></div>
-</div>
 
-<!-- Frage 66 -->
-<div class="question" data-index="59" data-correct="B,C,E">
-  <div class="q-number">66. (68291) – 2 Punkte</div>
-  <div class="q-text">
-    Ein Fahrer fährt einen LKW über 7,5 t. Unterwegs fällt die OBU (On-Board-Unit) aus. Was muss er beachten?
+  <!-- Frage 66 -->
+  <div class="question" data-index="59" data-correct="B,C,E">
+    <div class="q-number">66. (68291) – 2 Punkte</div>
+    <div class="q-text">
+      Ein Fahrer fährt einen LKW über 7,5 t. Unterwegs fällt die OBU (On-Board-Unit) aus. Was muss er beachten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Er kann wie geplant weiterfahren.</button>
+      <button class="option" data-value="B">Er muss das mautpflichtige Straßennetz verlassen.</button>
+      <button class="option" data-value="C">Am Ende der Fahrt muss er die Störung beim BALM melden.</button>
+      <button class="option" data-value="D">Er ist nicht verantwortlich, dass die OBU funktioniert.</button>
+      <button class="option" data-value="E">Er muss die Maut unverzüglich nachbuchen.</button>
+    </div>
+    <div class="feedback" id="fb-59"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">Er kann wie geplant weiterfahren.</button>
-    <button class="option" data-value="B">Er muss das mautpflichtige Straßennetz verlassen.</button>
-    <button class="option" data-value="C">Am Ende der Fahrt muss er die Störung beim BALM melden.</button>
-    <button class="option" data-value="D">Er ist nicht verantwortlich, dass die OBU funktioniert.</button>
-    <button class="option" data-value="E">Er muss die Maut unverzüglich nachbuchen.</button>
-  </div>
-  <div class="feedback" id="fb-59"></div>
-</div>
 
-<!-- Frage 67 -->
-<div class="question" data-index="60" data-correct="B">
-  <div class="q-number">67. (68285) – 1 Punkt</div>
-  <div class="q-text">
-    Auf der Rückseite eines Lkws sehen Sie eine weiße Tafel (30×40 cm) mit großem schwarzem „A“. Was bedeutet das?
+  <!-- Frage 67 -->
+  <div class="question" data-index="60" data-correct="B">
+    <div class="q-number">67. (68285) – 1 Punkt</div>
+    <div class="q-text">
+      Auf der Rückseite eines Lkws sehen Sie eine weiße Tafel (30×40 cm) mit großem schwarzem „A“. Was bedeutet das?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Gefahrguttransport</button>
+      <button class="option" data-value="B">Abfalltransport</button>
+      <button class="option" data-value="C">Schwertransport</button>
+      <button class="option" data-value="D">Autotransport</button>
+    </div>
+    <div class="feedback" id="fb-60"></div>
   </div>
-  <div class="options">
-    <button class="option" data-value="A">Gefahrguttransport</button>
-    <button class="option" data-value="B">Abfalltransport</button>
-    <button class="option" data-value="C">Schwertransport</button>
-    <button class="option" data-value="D">Autotransport</button>
-  </div>
-  <div class="feedback" id="fb-60"></div>
-</div>
 
   <!-- Frage 70 -->
   <div class="question" data-index="61" data-correct="C">
@@ -1703,7 +1709,7 @@
   </div>
 
   <!-- Frage 107 -->
-  <div class="question" data-index="100" data-correct="A E C">
+  <div class="question" data-index="100" data-correct="A,E,C">
     <div class="q-number">107. (6615) – 2 Punkte</div>
     <div class="q-text">
       In welchen Ländern gilt die EURO-Vignette?
@@ -1719,7 +1725,7 @@
   </div>
 
   <!-- Frage 108 -->
-  <div class="question" data-index="101" data-correct="A C D">
+  <div class="question" data-index="101" data-correct="A,C,D">
     <div class="q-number">108. (6613) – 2 Punkte</div>
     <div class="q-text">
       In welchen Ländern gilt die EURO-Vignette?
@@ -1843,7 +1849,7 @@
   </div>
 
   <!-- Frage 116 -->
-  <div class="question" data-index="109" data-correct="A E">
+  <div class="question" data-index="109" data-correct="A,E">
     <div class="q-number">116. (6623) – 2 Punkte</div>
     <div class="q-text">
       Transport leicht verderblicher Lebensmittel: Wie weist man die technischen Voraussetzungen nach?
@@ -1924,7 +1930,8 @@
       const btn = e.currentTarget;
       const qEl = btn.closest('.question');
       const index = parseInt(qEl.getAttribute('data-index'), 10);
-      const correct = qEl.getAttribute('data-correct');
+      const correctRaw = qEl.getAttribute('data-correct') || '';
+      const correctValues = correctRaw.split(',').map(s => s.trim()).filter(Boolean);
       const value = btn.getAttribute('data-value');
       const fb = document.getElementById('fb-' + index);
 
@@ -1935,9 +1942,9 @@
 
       answers[index] = value;
 
-      if (value === correct) {
+      if (correctValues.includes(value)) {
         btn.classList.add('correct');
-        fb.textContent = 'Doğru ✔';
+        fb.textContent = 'Doğru ✔  (Doğru cevap(lar): ' + correctRaw + ')';
         fb.className = 'feedback correct';
         if (!answered[index]) {
           answered[index] = true;
@@ -1946,14 +1953,15 @@
         }
       } else {
         btn.classList.add('wrong');
-        fb.textContent = 'Mal ✘  (Doğru cevap: ' + correct + ')';
+        fb.textContent = 'Yanlış ✘  (Doğru cevap(lar): ' + correctRaw + ')';
         fb.className = 'feedback wrong';
         if (!answered[index]) {
           answered[index] = true;
         }
-        // Doğru olanı da göster
+        // Doğru olan(lar)ı da göster
         qEl.querySelectorAll('.option').forEach(o => {
-          if (o.getAttribute('data-value') === correct) {
+          const v = o.getAttribute('data-value');
+          if (correctValues.includes(v)) {
             o.classList.add('correct');
           }
         });
