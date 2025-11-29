@@ -132,6 +132,39 @@
       font-size: 0.75rem;
       color: #e5e7eb;
     }
+
+    /* ---------- YENİ: Soru atlama navigasyonu ---------- */
+    .jump-nav {
+      margin-top: 18px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(31,41,55,0.9);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.8rem;
+    }
+    .jump-nav-title {
+      width: 100%;
+      margin-bottom: 4px;
+      color: #9ca3af;
+    }
+    .jump-btn {
+      border: 1px solid rgba(148,163,184,0.4);
+      background: transparent;
+      color: #e5e7eb;
+      border-radius: 999px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      min-width: 26px;
+      text-align: center;
+    }
+    .jump-btn.active {
+      background: #4f46e5;
+      border-color: #818cf8;
+      color: #f9fafb;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -159,6 +192,12 @@
       <span id="progress-pill" class="pill"></span>
       <span>Not: <b>Karşılık beklemeden yapıldı.</b> </span>
     </div>
+
+    <!-- YENİ: Soru atlama bölümü -->
+    <div id="jump-nav" class="jump-nav">
+      <div class="jump-nav-title">Sorulara hızlı geçiş:</div>
+    </div>
+
   </div>
 
   <script>
@@ -231,7 +270,6 @@
           "Man soll immer mit dem Gang anfahren, wie es in der Betriebsanleitung steht.",
           "Vorsichtiges Einkuppeln mit niedriger Motordrehzahl schont das Material."
         ],
-        // senin verdiğin cevaba göre: A (eğer B dersen bunu [1] yaparız)
         correctIndexes: [0]
       },
       {
@@ -246,8 +284,7 @@
         correctIndexes: [0]
       },
 
-      // --- Buradan itibaren senin verdiğin 17–50. sorular ---
-
+      // --- 17–157 arası: senin gönderdiğin sorular ---
       {
         // 17
         question: "Was kann mit der Druckverlustprüfung (Druckabfall bei Vollbremsung) überprüft werden?",
@@ -257,7 +294,7 @@
           "Man prüft, ob der Lufttrockner funktioniert.",
           "Man prüft den Abfall des Drucks im Vorratsbehälter"
         ],
-        correctIndexes: [3] // d
+        correctIndexes: [3]
       },
       {
         // 18
@@ -269,7 +306,7 @@
           "Scheibenbremse",
           "Felgenbremse"
         ],
-        correctIndexes: [0, 3] // a d
+        correctIndexes: [0, 3]
       },
       {
         // 19
@@ -281,7 +318,7 @@
           "falsche Einstellung des ALB-Reglers am Anhänger",
           "zu geringe Leistung des Kompressors/Luftpressers"
         ],
-        correctIndexes: [0, 1] // a b
+        correctIndexes: [0, 1]
       },
       {
         // 20
@@ -292,7 +329,7 @@
           "Der Geschwindigkeitsregler sollte nur in Steigungen oder Gefällen benutzt werden.",
           "Der Geschwindigkeitsregler sollte nur bei hohen Geschwindigkeiten benutzt werden."
         ],
-        correctIndexes: [1] // b
+        correctIndexes: [1]
       },
       {
         // 21
@@ -304,7 +341,7 @@
           "Bremsleitungen oder Bremsschläuche sind defekt.",
           "Der Druckluftvorrat in den Druckluftbehältern ist zu niedrig, weil Kondenswasser in den Druckluftbehältern ist."
         ],
-        correctIndexes: [3, 4] // d e
+        correctIndexes: [3, 4]
       },
       {
         // 22
@@ -315,7 +352,7 @@
           "der Lufttrockner",
           "das Vierkreis-Schutzventil"
         ],
-        correctIndexes: [1] // b
+        correctIndexes: [1]
       },
       {
         // 23
@@ -327,7 +364,7 @@
           "Trittplattenbremsventil",
           "Federspeicherbremszylinder"
         ],
-        correctIndexes: [0, 2] // a c
+        correctIndexes: [0, 2]
       },
       {
         // 24
@@ -339,7 +376,7 @@
           "Luftbehälter",
           "Mehrkreisschutzventil"
         ],
-        correctIndexes: [1, 2] // b c
+        correctIndexes: [1, 2]
       },
       {
         // 25
@@ -351,7 +388,7 @@
           "Bei langen Autobahnfahrten braucht man kein EBS-System. Man braucht nur für schwieriges Gelände ein EBS-System, weil das Fahrzeug mit EBS-System nicht rutscht.",
           "Wenn das Fahrzeug ein EBS-System hat, dann kann der Fahrer sehen, an welchem Rad die Bremsbeläge verschlissen sind und neu gemacht werden müssen."
         ],
-        correctIndexes: [0, 2] // a c
+        correctIndexes: [0, 2]
       },
       {
         // 26
@@ -362,7 +399,7 @@
           "Der Einschaltdruck ist der Druck, bei dem der Druckregler einschaltet, um die Bremsanlage wieder mit Druckluft zu befüllen.",
           "Der Einschaltdruck des Druckreglers bestimmt den Zeitpunkt zum Lösen des Federspeichers."
         ],
-        correctIndexes: [2] // c
+        correctIndexes: [2]
       },
       {
         // 27
@@ -373,7 +410,7 @@
           "wie das Vierkreisschutzventil funktioniert.",
           "ob der Membranzylinder dicht ist."
         ],
-        correctIndexes: [1] // b
+        correctIndexes: [1]
       },
       {
         // 28
@@ -384,7 +421,7 @@
           "Der Lufttrockner hilft gegen Bremsen-Fading im Schiebebetrieb.",
           "Der Lufttrockner entzieht der Luft Feuchtigkeit."
         ],
-        correctIndexes: [3] // d
+        correctIndexes: [3]
       },
       {
         // 29
@@ -395,7 +432,7 @@
           "Spurhalteassistenz-System",
           "Reifendruckkontroll-System"
         ],
-        correctIndexes: [0] // a
+        correctIndexes: [0]
       },
       {
         // 30
@@ -406,7 +443,7 @@
           "Mit einem ABV kann man bergab und in Kurven schneller fahren.",
           "Das ABV funktioniert nur, wenn die Fahrbahn nass ist."
         ],
-        correctIndexes: [0] // a
+        correctIndexes: [0]
       },
       {
         // 31
@@ -417,7 +454,7 @@
           "Sie erkennt defekte Kraftstoffleitungen und schützt so vor Kraftstoffverlust.",
           "Bei Fahrzeugen mit 2 Tanks steuert sie die Förderung des Kraftstoffes in den Haupttank."
         ],
-        correctIndexes: [1] // b
+        correctIndexes: [1]
       },
       {
         // 32
@@ -429,7 +466,7 @@
           "die bauartbedingte Höchstgeschwindigkeit",
           "den Abstand zum Vorausfahrenden"
         ],
-        correctIndexes: [0, 2] // a c
+        correctIndexes: [0, 2]
       },
       {
         // 33
@@ -441,7 +478,7 @@
           "Er passt die Geschwindigkeit dem Kurvenradius an.",
           "Er überwacht die Konzentration des Fahrers."
         ],
-        correctIndexes: [0, 1] // a b
+        correctIndexes: [0, 1]
       },
       {
         // 34
@@ -452,7 +489,7 @@
           "nur bei Steigungen oder Gefällen",
           "nur bei hohen Geschwindigkeiten"
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 35
@@ -464,7 +501,7 @@
           "Ein Radbremszylinder beim Anhänger ist ausgefallen.",
           "Die Schlauchverbindungen zum Anhänger sind vertauscht."
         ],
-        correctIndexes: [0, 3] // a d
+        correctIndexes: [0, 3]
       },
       {
         // 36
@@ -475,7 +512,7 @@
           "Wenn die Kühlwassertemperatur steigt, wirkt der Retarder besser.",
           "Beim Benutzen von Retardern verschleißt der Bremsbelag schneller."
         ],
-        correctIndexes: [1] // b
+        correctIndexes: [1]
       },
       {
         // 37
@@ -486,7 +523,7 @@
           "Sie nutzen eine vorhandene Differentialsperre.",
           "Sie stellen den Geschwindigkeitsbegrenzer auf eine niedrigere Geschwindigkeit."
         ],
-        correctIndexes: [0] // a
+        correctIndexes: [0]
       },
       {
         // 38
@@ -497,7 +534,7 @@
           "Die Dauerbremse ist eine Hilfsbremsanlage für die Feststellbremse.",
           "Die Dauerbremse schont die Betriebsbremse."
         ],
-        correctIndexes: [3] // d
+        correctIndexes: [3]
       },
       {
         // 39
@@ -509,7 +546,7 @@
           "höhere Geschwindigkeiten im Fahrbetrieb ermöglichen",
           "ein Überbremsen des Anhängers verhindern"
         ],
-        correctIndexes: [0, 2] // A C
+        correctIndexes: [0, 2]
       },
       {
         // 40
@@ -520,7 +557,7 @@
           "beim Befahren von Steigungen",
           "bei schlechten Fahrbahnverhältnissen oder kritischen Witterungsverhältnissen (z. B. Schnee, Wasserglätte)"
         ],
-        correctIndexes: [0] // a
+        correctIndexes: [0]
       },
       {
         // 41
@@ -532,7 +569,7 @@
           "den Fahrer beim Anfahren unterstützen",
           "die Bremswirkung gleichmäßig auf alle Räder verteilen"
         ],
-        correctIndexes: [0, 3] // a d
+        correctIndexes: [0, 3]
       },
       {
         // 42
@@ -544,7 +581,7 @@
           "ein Retarder",
           "Eine Bremsanlage, welche die Betriebsbremse ersetzt."
         ],
-        correctIndexes: [0, 3] // a d
+        correctIndexes: [0, 3]
       },
       {
         // 43
@@ -555,7 +592,7 @@
           "Retarder",
           "Scheibenbremse"
         ],
-        correctIndexes: [2] // c
+        correctIndexes: [2]
       },
       {
         // 44
@@ -566,7 +603,7 @@
           "Der Einspritzpunkt wird um 180 Grad verschoben.",
           "Eine Klappe im Auspuffkrümmer wird geschlossen und das Einspritzsystem auf Nullförderung gestellt."
         ],
-        correctIndexes: [3] // d
+        correctIndexes: [3]
       },
       {
         // 45
@@ -577,9 +614,8 @@
           "mehr als 9 t",
           "mehr als 12 t"
         ],
-        correctIndexes: [3] // d
+        correctIndexes: [3]
       },
-      // 47 açık uçlu olduğu için şimdilik atladık
       {
         // 46
         question: "Welche technische Bremseinrichtung ist keine Dauerbremse?",
@@ -589,7 +625,7 @@
           "die Wirbelstrom-Bremse (Retarder)",
           "eine Kombination aus Auspuffklappenbremse und Wirbelstrombremse (Retarder)."
         ],
-        correctIndexes: [1] // b
+        correctIndexes: [1]
       },
       {
         // 48
@@ -600,7 +636,7 @@
           "Um die Motorleistung zu erhöhen.",
           "Die Motorkraft wird für jeden Fahrbetrieb angepasst."
         ],
-        correctIndexes: [3] // d
+        correctIndexes: [3]
       },
       {
         // 49
@@ -611,7 +647,7 @@
           "Der Kraftfahrer betätigt bei jedem Gangwechsel das Gaspedal.",
           "Der Kraftfahrer betätigt bei jedem Gangwechsel 2-mal das Kupplungspedal."
         ],
-        correctIndexes: [1] // b
+        correctIndexes: [1]
       },
       {
         // 50
@@ -622,7 +658,7 @@
           "einen mittleren Gang",
           "Man muss ständig die Gänge wechseln, um eine hohe Drehzahl des Motors zu halten."
         ],
-        correctIndexes: [0] // a
+        correctIndexes: [0]
       },
       {
         // 51
@@ -633,7 +669,7 @@
           "Die Aufprallenergie ist immer gleich der Geschwindigkeit.",
           "Bis 35 km/h bleibt die Aufprallenergie konstant, ab dann halbiert sie sich."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 52
@@ -644,7 +680,7 @@
           "ESP kann die Traktion der Antriebsräder erhöhen.",
           "Fahrzeuge mit ESP haben bei Nässe einen viel kürzeren Bremsweg."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 53
@@ -655,7 +691,7 @@
           "Dieser Retarder wirkt ausschließlich auf die Vorderachse.",
           "Die Benutzung dieses Retarders erhöht den Bremsbelag-Verschleiß."
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 54
@@ -667,7 +703,7 @@
           "Abnutzung der Bremsscheiben durch übermäßige Bildung von Kondenswasser",
           "Dampfblasenbildung im Vorratsbehälter und Öffnen des Überdruckventils"
         ],
-        correctIndexes: [0, 1] // A+B
+        correctIndexes: [0, 1]
       },
       {
         // 55
@@ -678,7 +714,7 @@
           "Man kann prüfen, ob die Feststellbremse des Zugfahrzeuges allein den Lastzug im Gefälle halten kann.",
           "Man kann prüfen, ob der Luftpresser richtig arbeitet."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 56
@@ -689,7 +725,7 @@
           "Bei Fahrten bergab im Anhängerbetrieb wird zu viel Kraftstoff eingespritzt.",
           "Dauerhafte Benutzung des hydrodynamischen Retarders bei niedriger Motordrehzahl."
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 57
@@ -700,7 +736,7 @@
           "Warnweste anziehen, Radmuttern des defekten Rades lockern, Fahrzeug anheben, defektes Rad abnehmen, Fahrzeug gegen Wegrollen sichern, Ersatzrad aufstecken, Radmuttern über Kreuz anziehen",
           "Warnweste anziehen, Fahrzeug gegen Wegrollen sichern, Radmuttern des defekten Rades lockern, Fahrzeug anheben, Ersatzrad aufstecken, defektes Rad abnehmen, Radmuttern über Kreuz anziehen"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 58
@@ -711,7 +747,7 @@
           "Flüssigkeit tritt beim Betätigen des Entwässerungsventils aus.",
           "starker Luftaustritt am Überdruckventil"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 59
@@ -722,7 +758,7 @@
           "Weiterfahren. Die Leistung des Kompressors ist ausreichend. Man kann problemlos weiterfahren.",
           "Wenn sich die Vorratsanzeige nicht verändert, kann man weiterfahren."
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 60
@@ -734,7 +770,7 @@
           "verschlissene Kupplungsscheibe",
           "Rückholfeder vom Pedal gebrochen"
         ],
-        correctIndexes: [1, 3] // B+D
+        correctIndexes: [1, 3]
       },
       {
         // 61
@@ -746,7 +782,7 @@
           "Sofern vorhanden, versuche ich, das Fahrzeug in einer Notfallspur zum Stehen zu bringen.",
           "den Rückwärtsgang einlegen"
         ],
-        correctIndexes: [1, 3] // B+D
+        correctIndexes: [1, 3]
       },
       {
         // 62
@@ -757,7 +793,7 @@
           "Fahrzeug sichern - Radmuttern lösen - Fahrzeug anheben - Ersatzrad montieren - Radmuttern nachziehen - Fahrzeug absenken",
           "Fahrzeug anheben - Radmuttern lösen - Fahrzeug sichern - Ersatzrad montieren - Radmuttern nachziehen - Fahrzeug absenken"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 63
@@ -768,7 +804,7 @@
           "als Ersatz für Unterlegkeile",
           "um Schwertransporte durchführen zu können"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 64
@@ -779,7 +815,7 @@
           "Motorbetrieb im unteren Temperaturbereich vermindert Verschleiß und Kraftstoffverbrauch.",
           "Durch Warmlaufenlassen im Stand nutzt man die Zeit der Abfahrtkontrolle besser."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 65
@@ -790,7 +826,7 @@
           "falscher Einspritzzeitpunkt",
           "Einspritzmenge zu gering"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 66
@@ -801,7 +837,7 @@
           "schlechte Gasannahme und überhöhte Leerlaufdrehzahl des Motors",
           "zu niedriger Öldruck und Motoraussetzer mit Leistungsverlust"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 67
@@ -813,7 +849,7 @@
           "Ein Fahrer kann sich immer darauf verlassen, dass ein technisch einwandfrei funktionierendes ESP-System die Stabilität des Fahrzeuges gewährleistet.",
           "Bei trockener Straße hat ein ESP-System keine Wirkung."
         ],
-        correctIndexes: [0, 2] // A+C
+        correctIndexes: [0, 2]
       },
       {
         // 68
@@ -824,7 +860,7 @@
           "Fahrzeug mit Kraftstoffvorwärmer nachrüsten",
           "Wärmedämmung des Tanks"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 69
@@ -835,7 +871,7 @@
           "Fahrzeug mit Kraftstoffvorwärmer nachrüsten",
           "Wärmedämmung des Tanks"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 70
@@ -846,7 +882,7 @@
           "Ein Euro-4-Fahrzeug hat geringere Schadstoffwerte als ein Euro-6-Fahrzeug.",
           "Der Schadstoffausstoß ist zwischen allen Euro-Normen gleich groß."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 71
@@ -857,7 +893,7 @@
           "im elastischen Drehzahlbereich fahren",
           "die vorgeschriebenen Höchstgeschwindigkeiten einhalten"
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 72
@@ -868,7 +904,7 @@
           "Die Oktanzahl des Kraftstoffes ist zu hoch.",
           "Durch Paraffinausscheidung des Dieselkraftstoffes verstopfen die Filter."
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 73
@@ -880,7 +916,7 @@
           "dem Diesel Additive beimischen",
           "durch den Einbau einer Kraftstoff-Wärme-Pumpe"
         ],
-        correctIndexes: [1, 3, 4] // B + D + E
+        correctIndexes: [1, 3, 4]
       },
       {
         // 74
@@ -892,7 +928,7 @@
           "Ohmscher Widerstand",
           "Luftwiderstand"
         ],
-        correctIndexes: [2, 4] // C + E
+        correctIndexes: [2, 4]
       },
       {
         // 75
@@ -903,7 +939,7 @@
           "zu geringer Reifendruck auf der Vorderachse",
           "Einsatz von synthetischem Motoröl"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 76
@@ -914,7 +950,7 @@
           "bergab ohne Gang fahren",
           "Rollphasen nutzen"
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 77
@@ -926,7 +962,7 @@
           "die Sitzeinstellung",
           "die ordnungsgemäße Ladungssicherung"
         ],
-        correctIndexes: [0, 1] // A + B
+        correctIndexes: [0, 1]
       },
       {
         // 78
@@ -937,7 +973,7 @@
           "Der Reifendruck hat keine Auswirkung auf das Fahrverhalten.",
           "Der Reifendruck kann ohne Auswirkungen bis zu einem Bar von den Herstellerangaben abweichen."
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 79
@@ -948,7 +984,7 @@
           "Steigungswiderstand",
           "Beschleunigungswiderstand"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 80
@@ -959,7 +995,7 @@
           "die Gänge möglichst vollständig ausfahren - im roten Bereich des Drehzahlmessers schalten",
           "Beschleunigung mit voller Motorlast und maximaler Drehzahl in kurzen Schaltsprüngen"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 81
@@ -970,7 +1006,7 @@
           "Eine wirtschaftliche Fahrweise verlängert die Fahrzeiten.",
           "Eine wirtschaftliche Fahrweise erhöht leicht den Reifenverschleiß im Anhängerbetrieb."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 82
@@ -981,7 +1017,7 @@
           "Er rollt auf ebener Landstraße dahin.",
           "Er befindet sich im schweren Gelände."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 83
@@ -992,9 +1028,8 @@
           "Sie fahren mit Ihrem Fahrzeug auf ebener Landstraße.",
           "Sie befinden sich in schwerem Gelände."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
-      // 84 & 85: offene Rechenaufgabe (2 t/Lademeter), HTML-quiz'te şimdilik yok
       {
         // 86
         question: "Was ist auf Steigungsstrecken bei glatter Fahrbahn besonders zu beachten?",
@@ -1004,7 +1039,7 @@
           "Es sind rechtzeitig Schneeketten anzulegen und die Motordrehzahl sollte keinesfalls weniger als 1.700 1/min betragen. Die Beladung des LKW sollte nur auf den angetriebenen Achsen erfolgen.",
           "Fahrer von modernen Kraftfahrzeugen müssen nichts Besonderes beachten, da die Elektronik in jedem Fall das Fahrzeug fahrstabil hält."
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 87
@@ -1015,7 +1050,7 @@
           "Er vergrößert sich.",
           "Er bleibt gleich."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 88
@@ -1027,7 +1062,7 @@
           "Sicherheitsabstand vergrößern, Geschwindigkeit anpassen, Aufmerksamkeit verringern",
           "Sicherheitsabstand vergrößern, Geschwindigkeit verringern, bei Nebel öfter Scheibenwischer betätigen"
         ],
-        correctIndexes: [2, 4] // C + E
+        correctIndexes: [2, 4]
       },
       {
         // 89
@@ -1038,7 +1073,7 @@
           "Straßenverkehrs-Ordnung (StVO)",
           "Arbeitszeitgesetz (ArbZG)"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 90
@@ -1049,7 +1084,7 @@
           "nur der Verlader",
           "Fahrer und Verlader"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 91
@@ -1060,7 +1095,7 @@
           "Das Handbremsseil an der Deichsel ist locker und schlaff.",
           "Der Signalstift ist im Kupplungskopf nicht mehr zu sehen."
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 92
@@ -1071,7 +1106,7 @@
           "Das Mehrkreisschutzventil greift ein.",
           "Der Rollwiderstand erhöht sich."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 93
@@ -1082,7 +1117,7 @@
           "Sie wird belastet.",
           "Vorderachse und Hinterachse werden gleich belastet."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 94
@@ -1093,7 +1128,7 @@
           "dynamische Achslastverlagerung",
           "Es gibt beim Bremsen keine Gewichtsverlagerung an den Achsen."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 95
@@ -1104,7 +1139,7 @@
           "dynamische Achslastverlagerung",
           "beim Bremsen findet keine Gewichtsverlagerung an den Achsen statt"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 96
@@ -1115,7 +1150,7 @@
           "mittlerer Gang mit hoher Drehzahl und schleifender Kupplung",
           "höchste Drehzahl im höchsten Gang"
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 97
@@ -1126,7 +1161,7 @@
           "Sie wird belastet.",
           "Vorderachse und Hinterachse werden gleich belastet."
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 98
@@ -1137,7 +1172,7 @@
           "dynamische Achslastverlagerung",
           "Bremsfading"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 99
@@ -1148,7 +1183,7 @@
           "Der Stahlblock muss wie jedes andere Gut gesichert werden.",
           "Eine Sicherung ist erst ab Bahn-Verladung erforderlich."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 102
@@ -1159,7 +1194,7 @@
           "mit Spannketten und Antirutschmatten",
           "Es ist keine besondere Sicherung erforderlich."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 103
@@ -1171,7 +1206,7 @@
           "Antirutschmatten dürfen nur bei Gütern ab 500 kg verwendet werden.",
           "Das Ladegut wird damit gegen Verrutschen gesichert."
         ],
-        correctIndexes: [2, 4] // C + E
+        correctIndexes: [2, 4]
       },
       {
         // 104
@@ -1182,7 +1217,7 @@
           "Die Zurrmittel werden dabei im geraden Zug eingesetzt.",
           "Ladegüter werden direkt auf die Ladefläche gepresst."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 105
@@ -1193,7 +1228,7 @@
           "vorsichtiges Fahren",
           "das Gewicht der Ladung"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 106
@@ -1204,7 +1239,7 @@
           "kombinierte Sicherung",
           "keine Ladungssicherung"
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 107
@@ -1215,7 +1250,7 @@
           "Höhe der zulässigen Zugkraft des Zurrmittels",
           "Anpresskraft"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 108
@@ -1226,7 +1261,7 @@
           "formschlüssige Sicherung",
           "besondere Art des Formschlusses"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 109
@@ -1237,7 +1272,7 @@
           "verhindern ein Verrutschen des Ladegutes.",
           "Kantengleiter sollen ausschließlich das Ladegut schützen."
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 110
@@ -1248,7 +1283,7 @@
           "Schrägzurren",
           "Diagonalzurren"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 111
@@ -1259,7 +1294,7 @@
           "1,5 bis maximal 2,5 Windungen",
           "1,5 bis maximal 3 Windungen"
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 114
@@ -1271,7 +1306,7 @@
           "Die maximale Zurrkraft in geradem Zug beträgt 2.500 daN.",
           "Die maximale Zurrkraft für Umspannen ist 5.000 daN."
         ],
-        correctIndexes: [3, 4] // D + E
+        correctIndexes: [3, 4]
       },
       {
         // 115
@@ -1282,7 +1317,7 @@
           "\"LC\" ist das Prüfzeichen für ein in Europa zugelassenes Zurrmittel.",
           "\"LC\" ist die maximale Kraft im direkten Zug, die ein Zurrmittel aushalten muss."
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 117
@@ -1293,7 +1328,7 @@
           "Der Fahrer braucht nur den Flurförderschein, wenn das Verladepersonal an der Ladestelle eine Einweisung macht.",
           "Der Fahrer braucht den Flurförderschein und der Stapler muss nach StVZO ausgerüstet sein."
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 118
@@ -1305,7 +1340,7 @@
           "Der Fahrer braucht den Flurförderschein.",
           "der Stapler muss nach StVZO ausgerüstet sein."
         ],
-        correctIndexes: [3, 4] // D + E
+        correctIndexes: [3, 4]
       },
       {
         // 119
@@ -1317,7 +1352,7 @@
           "Es ist eine Einweisung zur Führung oder Instandhaltung des Ladekranes erforderlich.",
           "das Mindestalter von 21 Jahren"
         ],
-        correctIndexes: [2, 3] // C + D
+        correctIndexes: [2, 3]
       },
       {
         // 120
@@ -1329,7 +1364,7 @@
           "durch das Unterlegen von Antirutschmatten",
           "durch ein Netz"
         ],
-        correctIndexes: [2, 4] // C + E
+        correctIndexes: [2, 4]
       },
       {
         // 121
@@ -1340,7 +1375,7 @@
           "hohe Motordrehzahl - niedrige Geschwindigkeit",
           "jede, weil Dieselmotoren ein ausreichend hohes Drehmoment haben"
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 122
@@ -1351,7 +1386,7 @@
           "Es verteilt die Antriebskräfte auf mehrere Achsen.",
           "Es verteilt die Kraft auf die Räder einer Achse."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 123
@@ -1362,7 +1397,7 @@
           "Differenzialsperren einer Achse und zwischen Achsen",
           "andere Bezeichnungen für ABS"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 124
@@ -1373,7 +1408,7 @@
           "mit Bremsflüssigkeit",
           "mit speziellem Hydrauliköl"
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 126
@@ -1384,7 +1419,7 @@
           "41 t",
           "44 t"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 128
@@ -1396,7 +1431,7 @@
           "Tragfähigkeit der Reifen",
           "Leermasse"
         ],
-        correctIndexes: [2, 4] // C + E
+        correctIndexes: [2, 4]
       },
       {
         // 129
@@ -1407,7 +1442,7 @@
           "4 Achsen",
           "5 Achsen"
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 130
@@ -1418,7 +1453,7 @@
           "Zulässige Gesamtmasse und Leermasse",
           "Tragfähigkeit der Reifen und Leermasse"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 131
@@ -1429,7 +1464,7 @@
           "38 t",
           "42 t"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 136
@@ -1440,7 +1475,7 @@
           "Die Beladung muss man immer von der hinteren Ladebordwand her beginnen.",
           "Stapeln hat immer Vorrang vor dem formschlüssigen Ausfüllen der Ladefläche."
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 137
@@ -1452,7 +1487,7 @@
           "Der Abstand zwischen Reifen und Kotflügel ist sehr gering.",
           "Die Druckluftbremsanlage erreicht den Abschaltdruck nicht mehr."
         ],
-        correctIndexes: [3, 4] // D + E
+        correctIndexes: [3, 4]
       },
       {
         // 139
@@ -1463,7 +1498,7 @@
           "die Zulassungsbescheinigung Teil I",
           "die von der Genehmigungsbehörde erteilten Güterkraftverkehrserlaubnis"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 141
@@ -1474,7 +1509,7 @@
           "angepasste Geschwindigkeit und hohe Gewichtsauslastung des Fahrzeuges",
           "hoher Schwerpunkt und/oder einseitige Beladung"
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 142
@@ -1485,7 +1520,7 @@
           "maximal 3.000 daN, bei Sattelkraftfahrzeugen 6.000 daN",
           "maximal 6.000 daN"
         ],
-        correctIndexes: [1] // B
+        correctIndexes: [1]
       },
       {
         // 143
@@ -1496,7 +1531,7 @@
           "Die defekte Palette stellt man in die Mitte eines Paletten-Stapels, damit die Beschädigung beim nächsten Tausch nicht auffällt.",
           "Ich weise den Empfänger darauf hin, dass ein Anspruch auf Rückgabe unbeschädigter Paletten besteht."
         ],
-        correctIndexes: [3] // D
+        correctIndexes: [3]
       },
       {
         // 151
@@ -1507,7 +1542,7 @@
           "25 kg",
           "35 kg"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 152
@@ -1518,7 +1553,7 @@
           "Durch Engstellen soll man schnell fahren, um den nachfolgenden Verkehr nicht zu behindern.",
           "Wenn es zu eng wird, soll man das Fahrzeug wenden."
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 154
@@ -1529,7 +1564,7 @@
           "den Kraftstoffverbrauch steuern",
           "Nebenantriebe betätigen"
         ],
-        correctIndexes: [0] // A
+        correctIndexes: [0]
       },
       {
         // 155
@@ -1541,7 +1576,7 @@
           "Tragfähigkeit der Reifen",
           "Leermasse"
         ],
-        correctIndexes: [2, 3, 4] // C + D + E
+        correctIndexes: [2, 3, 4]
       },
       {
         // 156
@@ -1552,7 +1587,7 @@
           "Zulässige Gesamtmasse und Leermasse",
           "Tragfähigkeit der Reifen und Leermasse"
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       },
       {
         // 157
@@ -1563,7 +1598,7 @@
           "Durch einen hohen Schwerpunkt neigt das Fahrzeug bei einer Kurvenfahrt eher zum Umkippen.",
           "In einer Kurvenfahrt verlagert sich der Schwerpunkt zur Kurveninnenseite."
         ],
-        correctIndexes: [2] // C
+        correctIndexes: [2]
       }
     ];
 
@@ -1578,6 +1613,34 @@
     const nextBtn = document.getElementById("next-btn");
     const progressPill = document.getElementById("progress-pill");
 
+    // YENİ: jump navigation fonksiyonları
+    function initJumpNav() {
+      const jumpNav = document.getElementById("jump-nav");
+      questions.forEach((_, i) => {
+        const btn = document.createElement("button");
+        btn.textContent = i + 1;
+        btn.className = "jump-btn";
+        btn.dataset.index = i;
+
+        btn.addEventListener("click", () => {
+          currentIndex = i;
+          renderQuestion();
+          updateJumpHighlight();
+        });
+
+        jumpNav.appendChild(btn);
+      });
+    }
+
+    function updateJumpHighlight() {
+      document.querySelectorAll(".jump-btn").forEach(btn => {
+        btn.classList.remove("active");
+        if (parseInt(btn.dataset.index) === currentIndex) {
+          btn.classList.add("active");
+        }
+      });
+    }
+
     function renderQuestion() {
       const q = questions[currentIndex];
       if (!q) {
@@ -1589,6 +1652,7 @@
         feedbackEl.textContent = "";
         correctAnswerEl.textContent = "";
         progressPill.textContent = `Toplam soru: ${questions.length}`;
+        updateJumpHighlight();
         return;
       }
 
@@ -1625,6 +1689,7 @@
       nextBtn.disabled = true;
 
       progressPill.textContent = `Aktif: ${currentIndex + 1}/${questions.length}`;
+      updateJumpHighlight();
     }
 
     function getSelectedIndexes() {
@@ -1688,6 +1753,8 @@
       renderQuestion();
     });
 
+    // önce nav butonlarını oluştur, sonra ilk soruyu çiz
+    initJumpNav();
     renderQuestion();
   </script>
 </body>
