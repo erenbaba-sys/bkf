@@ -1,0 +1,2002 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>2 ye geçtin </title>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+    }
+    .app {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 24px 24px 32px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+    h1 {
+      margin-top: 0;
+      font-size: 1.6rem;
+      text-align: center;
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .progress-bar {
+      flex: 1;
+      background: #eee;
+      border-radius: 999px;
+      height: 8px;
+      margin: 0 12px;
+      overflow: hidden;
+    }
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: #4caf50;
+      transition: width 0.25s ease;
+    }
+    .question {
+      display: none;
+    }
+    .question.active {
+      display: block;
+    }
+    .q-number {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    .q-text {
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .options {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .option {
+      text-align: left;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      padding: 10px 12px;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: background 0.15s, border-color 0.15s, transform 0.05s;
+    }
+    .option:hover {
+      background: #f0f0f0;
+    }
+    .option.correct {
+      background: #e6f5ea;
+      border-color: #4caf50;
+    }
+    .option.wrong {
+      background: #fde7e7;
+      border-color: #f44336;
+    }
+    .feedback {
+      min-height: 22px;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    .feedback.correct {
+      color: #2e7d32;
+    }
+    .feedback.wrong {
+      color: #c62828;
+    }
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .nav button {
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      background: #1976d2;
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .nav button[disabled] {
+      opacity: 0.4;
+      cursor: default;
+    }
+    .nav button.secondary {
+      background: #e0e0e0;
+      color: #333;
+    }
+    .score {
+      font-weight: 600;
+    }
+
+    /* Soru atlama menüsü */
+    .jump-wrapper {
+      margin-top: 18px;
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+    }
+    .jump-title {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 6px;
+    }
+    .jump-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .jump-nav button {
+      min-width: 30px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #fafafa;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    .jump-nav button.active {
+      background: #1976d2;
+      color: #fff;
+      border-color: #1976d2;
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+  <h1>Round 2</h1>
+  <div class="meta">
+    <div class="score">Skor: <span id="score">0</span> / <span id="total">0</span></div>
+    <div class="progress-bar"><div class="progress" id="progress"></div></div>
+    <div>Frage <span id="current">1</span> / <span id="count">0</span></div>
+  </div>
+
+  <!-- Frage 3 -->
+  <div class="question active" data-index="0" data-correct="A">
+    <div class="q-number">3. (68668) – 1 Punkt</div>
+    <div class="q-text">
+      Ein Kraftfahrer möchte von seinem Arbeitgeber eine Kopie seines Arbeitsnachweises haben.
+      Hat der Fahrer Anspruch auf eine Kopie?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ja, er kann eine Kopie verlangen.</button>
+      <button class="option" data-value="B">nur wenn die vorgeschriebenen Arbeitszeiten durch diese Tätigkeit überschritten wurden.</button>
+      <button class="option" data-value="C">Nein, die Unterlagen unterliegen dem Datenschutz.</button>
+      <button class="option" data-value="D">Nur wenn die Arbeitszeiten über acht Stunden gedauert haben.</button>
+    </div>
+    <div class="feedback" id="fb-0"></div>
+  </div>
+
+  <!-- Frage 4 -->
+  <div class="question" data-index="1" data-correct="B">
+    <div class="q-number">4. (68628) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Ein Disponent arbeitet manchmal auch als Fahrer in der Güter- und Personenbeförderung.
+      Der Disponent hat in einer Woche 40 Stunden im Büro gearbeitet.
+      Wie viele Stunden kann er in dieser Woche als Fahrer ohne Ausgleich dieser zusätzlichen Arbeitszeit in den nächsten Wochen als Fahrer arbeiten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">keine weitere Stunde</button>
+      <button class="option" data-value="B">8 Stunden</button>
+      <button class="option" data-value="C">10 Stunden</button>
+      <button class="option" data-value="D">20 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-1"></div>
+  </div>
+
+  <!-- Frage 5 -->
+  <div class="question" data-index="2" data-correct="C">
+    <div class="q-number">5. (68602) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Wann beginnt und wann endet eine Woche für das Fahrpersonal?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Mittwoch 00:00 Uhr bis Dienstag 24:00 Uhr</button>
+      <button class="option" data-value="B">Samstag 00:00 Uhr bis Sonntag 24:00 Uhr</button>
+      <button class="option" data-value="C">Montag 00:00 Uhr bis Sonntag 24:00 Uhr</button>
+      <button class="option" data-value="D">Donnerstag 00:00 Uhr bis Freitag 24:00 Uhr</button>
+    </div>
+    <div class="feedback" id="fb-2"></div>
+  </div>
+
+  <!-- Frage 6 -->
+  <div class="question" data-index="3" data-correct="D">
+    <div class="q-number">6. (68289) – 1 Punkt</div>
+    <div class="q-text">
+      Der Arbeitgeber genehmigt dem Fahrer eine Nebentätigkeit in der Werkstatt einer anderen Firma.
+      Muss der Fahrer diese Arbeitszeit für den Arbeitgeber aufschreiben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Nein, das ist Privatsache.</button>
+      <button class="option" data-value="B">Nur wenn er zu lange Arbeitszeiten hat.</button>
+      <button class="option" data-value="C">Nur wenn er keine Genehmigung vom Arbeitgeber hat.</button>
+      <button class="option" data-value="D">Ja, er muss die Stunden aufschreiben und dem Arbeitgeber vorlegen.</button>
+    </div>
+    <div class="feedback" id="fb-3"></div>
+  </div>
+
+  <!-- Frage 7 -->
+  <div class="question" data-index="4" data-correct="D">
+    <div class="q-number">7. (66908) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Wie viele Stunden darf Fahrpersonal über die reguläre wöchentliche Arbeitszeit hinaus arbeiten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">10 Stunden</button>
+      <button class="option" data-value="B">12 Stunden</button>
+      <button class="option" data-value="C">16 Stunden</button>
+      <button class="option" data-value="D">14 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-4"></div>
+  </div>
+
+  <!-- Frage 8 -->
+  <div class="question" data-index="5" data-correct="B">
+    <div class="q-number">8. (66899) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Was gehört zur Arbeitszeit eines Kraftfahrers?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">alle Lenkzeiten - ohne Fahrtunterbrechungen und ohne Fahrzeugbeladung</button>
+      <button class="option" data-value="B">alle Lenkzeiten und alle sonstigen Tätigkeiten</button>
+      <button class="option" data-value="C">alle Lenkzeiten und sonstigen Tätigkeiten - ohne die Zeiten im Stau</button>
+      <button class="option" data-value="D">Lenkzeit, Fahrzeugpflege und Fahrzeugbeladung - ohne die Zeiten zum Ausfüllen der Papiere</button>
+    </div>
+    <div class="feedback" id="fb-5"></div>
+  </div>
+
+  <!-- Frage 10 -->
+  <div class="question" data-index="6" data-correct="A">
+    <div class="q-number">10. (6746) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Welche Tätigkeit gehört nicht zur Arbeitszeit eines Fahrers?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">
+        Wartezeit, in denen der Fahrer am Arbeitsplatz für seine Arbeit bereit sein muss -
+        und er vorher weiß, wie lang die Wartezeit ist.
+      </button>
+      <button class="option" data-value="B">Lenkzeiten, bei denen das Fahrzeug im Stau steht.</button>
+      <button class="option" data-value="C">
+        Ladetätigkeiten vor Beginn des Transportes - und der Fahrer weiß, wie lange das Laden dauert.
+      </button>
+      <button class="option" data-value="D">Papiere für den Transport ausfüllen.</button>
+    </div>
+    <div class="feedback" id="fb-6"></div>
+  </div>
+
+  <!-- Frage 11 -->
+  <div class="question" data-index="7" data-correct="A">
+    <div class="q-number">11. (6476) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Um wie viele Stunden kann die regelmäßige wöchentliche Arbeitszeit für Fahrer maximal verlängert werden?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">10 Stunden</button>
+      <button class="option" data-value="B">16 Stunden</button>
+      <button class="option" data-value="C">14 Stunden</button>
+      <button class="option" data-value="D">12 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-7"></div>
+  </div>
+
+  <!-- Frage 12 -->
+  <div class="question" data-index="8" data-correct="B">
+    <div class="q-number">12. (6469) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: In Ausnahmefällen arbeitet ein Lagerarbeiter auch als Fahrer in der Güter- und Personenbeförderung.
+      Der Lagerarbeiter hat in einer Woche 40 Stunden im Lager gearbeitet.
+      Wie viele Stunden kann er in dieser Woche maximal als Fahrer arbeiten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">5 Stunden</button>
+      <button class="option" data-value="B">10 Stunden</button>
+      <button class="option" data-value="C">20 Stunden</button>
+      <button class="option" data-value="D">25 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-8"></div>
+  </div>
+
+  <!-- Frage 13 -->
+  <div class="question" data-index="9" data-correct="A">
+    <div class="q-number">13. (6467) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Innerhalb von wie vielen Monaten muss ein Fahrer seine Überstunden ausgleichen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">zwei Monate</button>
+      <button class="option" data-value="B">vier Monate</button>
+      <button class="option" data-value="C">acht Monate</button>
+      <button class="option" data-value="D">zehn Monate</button>
+    </div>
+    <div class="feedback" id="fb-9"></div>
+  </div>
+
+  <!-- Frage 14 -->
+  <div class="question" data-index="10" data-correct="C">
+    <div class="q-number">14. (6466) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Welche Tätigkeit gehört nicht zur Arbeitszeit?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Lenktätigkeiten</button>
+      <button class="option" data-value="B">das Ausfüllen der Frachtpapiere</button>
+      <button class="option" data-value="C">Aufenthalt in der Schlafkabine</button>
+      <button class="option" data-value="D">die Kontrolle der Ladungssicherung</button>
+    </div>
+    <div class="feedback" id="fb-10"></div>
+  </div>
+
+  <!-- Frage 15 -->
+  <div class="question" data-index="11" data-correct="D">
+    <div class="q-number">15. (6464) – 1 Punkt</div>
+    <div class="q-text">
+      Arbeitszeitgesetz: Wie viele Stunden darf Fahrpersonal pro Woche maximal arbeiten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">74 Stunden</button>
+      <button class="option" data-value="B">86 Stunden</button>
+      <button class="option" data-value="C">120 Stunden</button>
+      <button class="option" data-value="D">60 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-11"></div>
+  </div>
+
+  <!-- Frage 16 -->
+  <div class="question" data-index="12" data-correct="D">
+    <div class="q-number">16. (6463) – 1 Punkt</div>
+    <div class="q-text">
+      Wie viele Stunden pro Woche darf Fahrpersonal im Durchschnitt arbeiten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">36 Stunden</button>
+      <button class="option" data-value="B">42 Stunden</button>
+      <button class="option" data-value="C">50 Stunden</button>
+      <button class="option" data-value="D">48 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-12"></div>
+  </div>
+
+  <!-- Frage 17 -->
+  <div class="question" data-index="13" data-correct="B">
+    <div class="q-number">17. (68717) – 1 Punkt</div>
+    <div class="q-text">
+      Ihre Fahrerkarte ist abgelaufen. Sie hatten rechtzeitig vor dem Ablauf eine neue Fahrerkarte erhalten.
+      Zum nächsten Fahrteinsatz nehmen Sie die neue Fahrerkarte mit.
+      Welche Pflicht besteht hinsichtlich Ihrer abgelaufenen Fahrerkarte zu beachten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Die alte Fahrerkarte muss unverzüglich vernichtet werden.</button>
+      <button class="option" data-value="B">Die abgelaufene Fahrerkarte muss unverzüglich im Büro abgeliefert werden.</button>
+      <button class="option" data-value="C">
+        Die abgelaufene Fahrerkarte muss maximal 15 Tage nach Ablauf der Gültigkeit im Fahrzeug mitgeführt werden.
+      </button>
+      <button class="option" data-value="D">
+        Die abgelaufene Fahrerkarte ist noch mindestens 28 Kalendertage nach Ablauf der Gültigkeit im Fahrzeug mitzuführen.
+      </button>
+    </div>
+    <div class="feedback" id="fb-13"></div>
+  </div>
+
+  <!-- Frage 18 -->
+  <div class="question" data-index="14" data-correct="A">
+    <div class="q-number">18. (68716) – 1 Punkt</div>
+    <div class="q-text">
+      Lenkzeiten: Sie haben diese Woche 47 Stunden gelenkt.
+      Wie viele Stunden dürfen Sie in der nächsten Woche maximal lenken?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">43 Stunden</button>
+      <button class="option" data-value="B">45 Stunden</button>
+      <button class="option" data-value="C">53 Stunden</button>
+      <button class="option" data-value="D">56 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-14"></div>
+  </div>
+
+  <!-- Frage 19 -->
+  <div class="question" data-index="15" data-correct="D">
+    <div class="q-number">19. (68671) – 1 Punkt</div>
+    <div class="q-text">
+      Fahrtenschreiber: Der digitale Fahrtenschreiber in Ihrem Fahrzeug ist defekt.
+      Die Zeitgruppen werden nicht mehr aufgezeichnet und nicht mehr ausgedruckt.
+      Wie müssen Sie jetzt Ihre Lenk- und Ruhezeiten, die anderen Arbeitszeiten und Fahrtunterbrechungen erfassen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Sie müssen nur die Fahrt-Unterbrechungen auf einem eigenen Blatt aufschreiben.</button>
+      <button class="option" data-value="B">Sie müssen keine weiteren Aufzeichnungen machen.</button>
+      <button class="option" data-value="C">Sie müssen nur die Lenkzeiten aufschreiben.</button>
+      <button class="option" data-value="D">
+        Sie müssen die Angaben über alle Zeitgruppen auf einem eigenen Blatt aufschreiben.
+      </button>
+    </div>
+    <div class="feedback" id="fb-15"></div>
+  </div>
+
+  <!-- Frage 20 -->
+  <div class="question" data-index="16" data-correct="D">
+    <div class="q-number">20. (68670) – 1 Punkt</div>
+    <div class="q-text">
+      Fahrtenschreiber: Welche Angaben zu Ihrer Person müssen Sie auf dem EU-Schaublatt eintragen
+      (gemäß EU-Sozialvorschriften)?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">keine Angaben zur Person</button>
+      <button class="option" data-value="B">Name und Anschrift</button>
+      <button class="option" data-value="C">Name und Geburtsdatum</button>
+      <button class="option" data-value="D">Name und Vorname</button>
+    </div>
+    <div class="feedback" id="fb-16"></div>
+  </div>
+
+  <!-- Frage 21 -->
+  <div class="question" data-index="17" data-correct="C">
+    <div class="q-number">21. (68667) – 1 Punkt</div>
+    <div class="q-text">
+      EU-Sozialvorschriften: Welche Fahrtunterbrechungen müssen Sie bei 10 Stunden Lenkzeit mindestens machen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">zuerst 15, dann 30 Minuten</button>
+      <button class="option" data-value="B">zuerst 45, dann 30 Minuten</button>
+      <button class="option" data-value="C">zweimal 45 Minuten</button>
+      <button class="option" data-value="D">zuerst 15, dann zweimal 30 Minuten</button>
+    </div>
+    <div class="feedback" id="fb-17"></div>
+  </div>
+
+  <!-- Frage 22 -->
+  <div class="question" data-index="18" data-correct="A">
+    <div class="q-number">22. (68648) – 2 Punkte</div>
+    <div class="q-text">
+      Fahrtenschreiber: Nach 3 Stunden Lenkzeit hat Ihr Fahrzeug einen Defekt und fällt aus. Das Fahrzeug hat einen analogen Fahrtenschreiber. 
+      Sie fahren mit einem Ersatz-Fahrzeug weiter. Das neue Fahrzeug hat einen digitalen Fahrtenschreiber. 
+      Welche Angaben müssen Sie am Ende auf dem Schaublatt aufschreiben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ausfallgrund des Fahrzeuges (Art des Schadens)</button>
+      <button class="option" data-value="B">Vorname und Name des Fahrers</button>
+      <button class="option" data-value="C">Kilometerstand am Ende der Fahrt (bei Fahrzeugwechsel)</button>
+      <button class="option" data-value="D">Amtliches Kennzeichen des Ersatzfahrzeuges</button>
+      <button class="option" data-value="E">Zeitpunkt (Datum) und Ort des Ausfalls</button>
+    </div>
+    <div class="feedback" id="fb-18"></div>
+  </div>
+
+  <!-- Frage 23 -->
+  <div class="question" data-index="19" data-correct="B">
+    <div class="q-number">23. (68644) – 1 Punkt</div>
+    <div class="q-text">
+      2-Fahrer-Besatzung: Wie heißt die Zeit des Beifahrers, während der andere Fahrer lenkt?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Lenkzeit</button>
+      <button class="option" data-value="B">Bereitschaftszeit</button>
+      <button class="option" data-value="C">Arbeitszeit</button>
+      <button class="option" data-value="D">Ruhezeit</button>
+    </div>
+    <div class="feedback" id="fb-19"></div>
+  </div>
+
+  <!-- Frage 24 -->
+  <div class="question" data-index="20" data-correct="A">
+    <div class="q-number">24. (68627) – 1 Punkt</div>
+    <div class="q-text">
+      Ihr Fahrzeug hat einen analogen Fahrtenschreiber. Während des Arbeitstages sind Sie jedoch nicht im Fahrzeug. 
+      Sie können das Gerät nicht nutzen. Wo müssen Sie Ihre Ruhezeiten, andere Arbeitszeiten und Fahrtunterbrechungen aufschreiben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">auf dem Schaublatt (automatisch, per Hand oder auf andere Weise)</button>
+      <button class="option" data-value="B">auf einem gesonderten Blatt</button>
+      <button class="option" data-value="C">in einem persönlichen Kontrollbuch</button>
+      <button class="option" data-value="D">auf dem Fahrtenblatt</button>
+    </div>
+    <div class="feedback" id="fb-20"></div>
+  </div>
+
+  <!-- Frage 25 -->
+  <div class="question" data-index="21" data-correct="B">
+    <div class="q-number">25. (68626) – 1 Punkt</div>
+    <div class="q-text">
+      Lenk- und Ruhezeiten: Sie fahren 4 Stunden und 30 Minuten ohne Unterbrechung. Wie lange muss Ihre Pause danach mindestens sein?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">60 Minuten</button>
+      <button class="option" data-value="B">45 Minuten</button>
+      <button class="option" data-value="C">30 Minuten</button>
+      <button class="option" data-value="D">15 Minuten</button>
+    </div>
+    <div class="feedback" id="fb-21"></div>
+  </div>
+
+  <!-- Frage 26 -->
+  <div class="question" data-index="22" data-correct="D">
+    <div class="q-number">26. (68623) – 1 Punkt</div>
+    <div class="q-text">
+      Welche Aussage zur Ruhepause ist gemäß der Definition der EU-Sozialvorschriften richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ruhepause ist jeder Zeitraum, in dem ein Fahrer im Stau steht und nicht fährt.</button>
+      <button class="option" data-value="B">Ruhepause ist jede Zeit, in der ein Fahrer nicht fährt, sondern das Fahrzeug reinigt.</button>
+      <button class="option" data-value="C">Ruhepause ist jede Zeit, in der ein Fahrer nicht fährt, sondern nur be- und entlädt.</button>
+      <button class="option" data-value="D">Ruhepause ist jede Zeit, in der ein Fahrer frei über seine Zeit verfügen kann - ohne Unterbrechung.</button>
+    </div>
+    <div class="feedback" id="fb-22"></div>
+  </div>
+
+  <!-- Frage 27 -->
+  <div class="question" data-index="23" data-correct="A">
+    <div class="q-number">27. (68621) – 2 Punkte</div>
+    <div class="q-text">
+      Welche Fahrtunterbrechungen sind bei 10 Stunden Lenkzeit zulässig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">zweimal 45 Minuten</button>
+      <button class="option" data-value="B">einmal 30 Minuten und einmal 60 Minuten</button>
+      <button class="option" data-value="C">einmal 15 Minuten und 30 Minuten und einmal 45 Minuten</button>
+      <button class="option" data-value="D">einmal 90 Minuten</button>
+      <button class="option" data-value="E">einmal 30 Minuten und 15 Minuten und einmal 15 Minuten und 30 Minuten</button>
+    </div>
+    <div class="feedback" id="fb-23"></div>
+  </div>
+
+  <!-- Frage 28 -->
+  <div class="question" data-index="24" data-correct="C">
+    <div class="q-number">28. (68605) – 1 Punkt</div>
+    <div class="q-text">
+      EG-Sozialvorschriften: Lenkzeit in der 1. Woche: 47 Stunden, Lenkzeit in der 2. Woche: 30 Stunden. 
+      Wie viele Stunden dürfen Sie in der 3. Woche maximal lenken?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">34 Stunden</button>
+      <button class="option" data-value="B">43 Stunden</button>
+      <button class="option" data-value="C">56 Stunden</button>
+      <button class="option" data-value="D">60 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-24"></div>
+  </div>
+
+  <!-- Frage 29 -->
+  <div class="question" data-index="25" data-correct="A">
+    <div class="q-number">29. (68600) – 2 Punkte</div>
+    <div class="q-text">
+      Sie wollen eine Fahrerkarte beantragen. Welche Unterlagen müssen Sie vorlegen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">gültige EU-Fahrerlaubnis</button>
+      <button class="option" data-value="B">Geburtsurkunde</button>
+      <button class="option" data-value="C">Lichtbild (Foto)</button>
+      <button class="option" data-value="D">polizeiliches Führungszeugnis</button>
+      <button class="option" data-value="E">Auszug aus dem Fahreignungsregister</button>
+    </div>
+    <div class="feedback" id="fb-25"></div>
+  </div>
+
+  <!-- Frage 30 -->
+  <div class="question" data-index="26" data-correct="C">
+    <div class="q-number">30. (68287) – 1 Punkt</div>
+    <div class="q-text">
+      Ruhezeiten: Wie viele reduzierte tägliche Ruhezeiten (mindestens 9 Stunden) dürfen Sie zwischen 2 wöchentlichen Ruhezeiten maximal machen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">maximal 1</button>
+      <button class="option" data-value="B">maximal 2</button>
+      <button class="option" data-value="C">maximal 3</button>
+      <button class="option" data-value="D">maximal 4</button>
+    </div>
+    <div class="feedback" id="fb-26"></div>
+  </div>
+
+  <!-- Frage 31 -->
+  <div class="question" data-index="27" data-correct="B">
+    <div class="q-number">31. (68284) – 2 Punkte</div>
+    <div class="q-text">
+      Fahrtenschreiber: Welche Angaben zu Ihrer Person müssen Sie auf dem Schaublatt eintragen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Geburtsdatum</button>
+      <button class="option" data-value="B">Name</button>
+      <button class="option" data-value="C">Anschrift</button>
+      <button class="option" data-value="D">keine Angaben zur Person</button>
+      <button class="option" data-value="E">Vorname</button>
+    </div>
+    <div class="feedback" id="fb-27"></div>
+  </div>
+
+  <!-- Frage 32 -->
+  <div class="question" data-index="28" data-correct="A">
+    <div class="q-number">32. (68283) – 2 Punkte</div>
+    <div class="q-text">
+      Fahrtenschreiber: Nach 3 Stunden Lenkzeit hat Ihr Fahrzeug einen Defekt und fällt aus. Das Fahrzeug hat einen analogen Fahrtenschreiber. 
+      Sie fahren mit einem Ersatz-Fahrzeug weiter. Das neue Fahrzeug hat einen digitalen Fahrtenschreiber. 
+      Welche Angaben müssen Sie am Ende auf dem Schaublatt aufschreiben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ausfallgrund des Fahrzeuges (Art des Schadens)</button>
+      <button class="option" data-value="B">Vorname und Name des Fahrers</button>
+      <button class="option" data-value="C">Kilometerstand am Ende der Fahrt (bei Fahrzeugwechsel)</button>
+      <button class="option" data-value="D">Amtliches Kennzeichen des Ersatzfahrzeuges</button>
+      <button class="option" data-value="E">Zeitpunkt (Datum) und Ort des Ausfalls</button>
+    </div>
+    <div class="feedback" id="fb-28"></div>
+  </div>
+
+  <!-- Frage 33 -->
+  <div class="question" data-index="29" data-correct="C">
+    <div class="q-number">33. (66909) – 1 Punkt</div>
+    <div class="q-text">
+      Digitaler Fahrtenschreiber: Für welche Länder müssen Sie an jedem Arbeitstag das Länderkennzeichen in das Gerät eingeben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">nur für das Land, in dem der Arbeitstag beginnt</button>
+      <button class="option" data-value="B">für das Land, in dem das Kfz zugelassen ist</button>
+      <button class="option" data-value="C">für das Land, in dem der Arbeitstag beginnt und endet sowie für das Land, in das Sie nach überqueren der Grenze einreisen</button>
+      <button class="option" data-value="D">für das Land, in dem der Arbeitstag beginnt und für das Land, in dem der Arbeitstag endet</button>
+    </div>
+    <div class="feedback" id="fb-29"></div>
+  </div>
+
+  <!-- Frage 36 -->
+  <div class="question" data-index="30" data-correct="D">
+    <div class="q-number">36. (6542) – 1 Punkt</div>
+    <div class="q-text">
+      Fahrtauftrag mit folgenden Angaben zur Fahrtunterbrechung:<br>
+      08.00 Uhr Beginn der Fahrt<br>
+      08.30 bis 08.45 Uhr Fahrtunterbrechung<br>
+      08.45 bis 11.00 Uhr Weiterfahrt (Lenkzeit)<br>
+      11.00 bis 11.30 Uhr Fahrtunterbrechung<br>
+      11.30 bis 13.15 Uhr Weiterfahrt (Lenkzeit)<br>
+      13.15 Ende der Tour<br>
+      Welche Aussage bezüglich des Fahrauftrags ist richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Die 1. Fahrtunterbrechung darf erst nach mindestens 1 Stunde Fahrzeit gemacht werden.</button>
+      <button class="option" data-value="B">Die 1. Fahrtunterbrechung muss mindestens 30 Minuten dauern.</button>
+      <button class="option" data-value="C">Die gesamte Lenkzeit ist 4,5 Stunden. Deshalb darf es keine Fahrtunterbrechung geben.</button>
+      <button class="option" data-value="D">Der Fahrauftrag darf mit diesen Fahrtunterbrechungen ausgeführt werden.</button>
+    </div>
+    <div class="feedback" id="fb-30"></div>
+  </div>
+
+  <!-- Frage 37 -->
+  <div class="question" data-index="31" data-correct="B">
+    <div class="q-number">37. (6536) – 1 Punkt</div>
+    <div class="q-text">
+      Ihr Lkw hat einen digitalen Fahrtenschreiber. Sie fahren auf ein Werksgelände. Wie müssen Sie den Fahrtenschreiber auf dem Werksgelände bedienen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Fahrerkarte hinter der Schranke aus dem Gerät nehmen.</button>
+      <button class="option" data-value="B">Fahrerkarte im Gerät lassen und die jeweils zutreffende Zeitgruppe schalten.</button>
+      <button class="option" data-value="C">Fahrerkarte im Gerät lassen und auf "Out of Scope" schalten.</button>
+      <button class="option" data-value="D">Fahrerkarte im Gerät lassen solange man auf dem Werksgelände fährt; nach dem Anhalten Fahrerkarte aus dem Gerät nehmen.</button>
+    </div>
+    <div class="feedback" id="fb-31"></div>
+  </div>
+
+  <!-- Frage 38 -->
+  <div class="question" data-index="32" data-correct="D">
+    <div class="q-number">38. (6520) – 1 Punkt</div>
+    <div class="q-text">
+      Fahrtenschreiber: Sie haben Ihre Fahrerkarte aus dem digitalen Fahrtenschreiber genommen. 
+      Als Sie Ihre Fahrerkarte wieder einstecken wollen, wird sie nicht erkannt. Die Karte ist defekt. 
+      Wie viele Kalendertage dürfen Sie maximal ohne Karte weiterfahren?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ohne Fahrerkarte darf man nicht weiterfahren.</button>
+      <button class="option" data-value="B">So lange bis Sie eine neue Fahrerkarte haben.</button>
+      <button class="option" data-value="C">7 Tage</button>
+      <button class="option" data-value="D">15 Tage</button>
+    </div>
+    <div class="feedback" id="fb-32"></div>
+  </div>
+
+  <!-- Frage 39 -->
+  <div class="question" data-index="33" data-correct="A">
+    <div class="q-number">39. (6515) – 1 Punkt</div>
+    <div class="q-text">
+      Lenkzeit nach EU-Sozialvorschriften: Sie fahren in der 1. Woche 56 Stunden. Wie viele Stunden können Sie in der 2. Woche noch fahren?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">34 Stunden</button>
+      <button class="option" data-value="B">45 Stunden</button>
+      <button class="option" data-value="C">56 Stunden</button>
+      <button class="option" data-value="D">90 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-33"></div>
+  </div>
+
+  <!-- Frage 40 -->
+  <div class="question" data-index="34" data-correct="C">
+    <div class="q-number">40. (6508) – 1 Punkt</div>
+    <div class="q-text">
+      Sie starten montags um 14.00 Uhr nach einer ausreichenden Wochenruhezeit mit einem 18-Tonnen-LKW im Mehrfahrerbetrieb eine Beförderung von Bonn nach Madrid. 
+      Bis wann muss Ihre nächste tägliche Ruhezeit (vorgeschriebene Mindestruhezeit) spätestens beendet sein?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">dienstags um 14.00 Uhr</button>
+      <button class="option" data-value="B">dienstags um 14.45 Uhr</button>
+      <button class="option" data-value="C">dienstags um 20.00 Uhr</button>
+      <button class="option" data-value="D">dienstags um 24.00 Uhr</button>
+    </div>
+    <div class="feedback" id="fb-34"></div>
+  </div>
+
+  <!-- ====== BURADAN İTİBAREN YENİ EKLENEN 41–58 ====== -->
+
+  <!-- Frage 41 -->
+  <div class="question" data-index="35" data-correct="B">
+    <div class="q-number">41. (6503) – 1 Punkt</div>
+    <div class="q-text">
+      Fahrerkarte: Welche Aussage ist richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Bei der Einstellung muss man die Fahrerkarte im Betrieb abgeben.</button>
+      <button class="option" data-value="B">Wenn der Arbeitgeber danach fragt, muss man ihm die Fahrerkarte zur Daten-Erfassung und zur Kontrolle geben.</button>
+      <button class="option" data-value="C">Wenn der Arbeitgeber die Fahrerkarte für einen Aushilfsfahrer braucht, muss man ihm die Karte geben.</button>
+      <button class="option" data-value="D">Der Fahrer muss die Daten von der Fahrerkarte herunterladen und dem Arbeitgeber per Mail schicken.</button>
+    </div>
+    <div class="feedback" id="fb-35"></div>
+  </div>
+
+  <!-- Frage 42 -->
+  <div class="question" data-index="36" data-correct="D">
+    <div class="q-number">42. (6501) – 1 Punkt</div>
+    <div class="q-text">
+      Lenk- und Ruhezeiten: Wie können Sie Ihre vorgeschriebenen Lenkzeitunterbrechungen aufteilen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">2 Stunden fahren - 30 Minuten Pause - 2,5 Stunden fahren - 15 Minuten Pause</button>
+      <button class="option" data-value="B">2 Stunden fahren - 15 Minuten Pause - 2 Stunden fahren - 15 Minuten Pause - 0,5 Stunde fahren - 15 Minuten Pause</button>
+      <button class="option" data-value="C">2 Stunden fahren - 20 Minuten Pause - 2 Stunden fahren - 20 Minuten Pause - 0,5 Stunde fahren - 20 Minuten Pause</button>
+      <button class="option" data-value="D">2 Stunden fahren - 15 Minuten Pause - 2, 5 Stunden fahren - 30 Minuten Pause</button>
+    </div>
+    <div class="feedback" id="fb-36"></div>
+  </div>
+
+  <!-- Frage 43 -->
+  <div class="question" data-index="37" data-correct="A">
+    <div class="q-number">43. (6499) – 1 Punkt</div>
+    <div class="q-text">
+      EU-Sozialvorschriften: In wie viele Abschnitte darf die regelmäßige, tägliche Ruhezeit höchstens aufgeteilt werden?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">in 2 Teile</button>
+      <button class="option" data-value="B">in 3 Teile</button>
+      <button class="option" data-value="C">in 4 Teile</button>
+      <button class="option" data-value="D">in 5 Teile</button>
+    </div>
+    <div class="feedback" id="fb-37"></div>
+  </div>
+
+  <!-- Frage 44 -->
+  <div class="question" data-index="38" data-correct="B">
+    <div class="q-number">44. (6495) – 1 Punkt</div>
+    <div class="q-text">
+      Sie fahren ein Fahrzeug mit einem digitalen Fahrtenschreiber. Unterwegs merken Sie, dass Sie Ihre Fahrerkarte in der Nacht verloren haben.
+      Wie lange dürfen Sie ohne Fahrerkarte weiterfahren?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">höchstens 3 Tage</button>
+      <button class="option" data-value="B">höchstens 15 Tage</button>
+      <button class="option" data-value="C">höchstens 7 Tage</button>
+      <button class="option" data-value="D">höchstens 28 Tage</button>
+    </div>
+    <div class="feedback" id="fb-38"></div>
+  </div>
+
+  <!-- Frage 45 -->
+  <div class="question" data-index="39" data-correct="A">
+    <div class="q-number">45. (6494) – 1 Punkt</div>
+    <div class="q-text">
+      Sie wollen eine Beförderung mit einem Fahrzeug durchführen. Dieses Fahrzeug hat einen digitalen Fahrtenschreiber. 
+      Sie stellen fest, dass Ihre Fahrerkarte beschädigt ist. Was müssen Sie tun, damit Sie alle notwendigen Zeiten dokumentieren können?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ich muss am Anfang und Ende der Fahrt Ausdrucke machen und unterschreiben.</button>
+      <button class="option" data-value="B">Ich muss nichts weiter machen.</button>
+      <button class="option" data-value="C">Ich muss nur am Anfang der Fahrt Ausdrucke machen und unterschreiben.</button>
+      <button class="option" data-value="D">Ich muss nur am Ende der Fahrt Ausdrucke machen und unterschreiben.</button>
+    </div>
+    <div class="feedback" id="fb-39"></div>
+  </div>
+
+  <!-- Frage 46 -->
+  <div class="question" data-index="40" data-correct="C">
+    <div class="q-number">46. (6493) – 1 Punkt</div>
+    <div class="q-text">
+      Fahrtenschreiber: Sie lenken seit 2 Monaten ein Fahrzeug mit analogem Fahrtenschreiber. Sie haben auch eine Fahrerkarte.
+      Welche Unterlagen beziehungsweise Datenträger müssen Sie bei einer Kontrolle zeigen, wenn Sie danach gefragt werden?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">die Schaublätter für die laufende Woche und die vorausgehenden 15 Tage</button>
+      <button class="option" data-value="B">die Schaublätter der letzten 2 Monate</button>
+      <button class="option" data-value="C">die Schaublätter für den laufenden Tag und die vorausgehenden 28 Tage und die Fahrerkarte</button>
+      <button class="option" data-value="D">die Schaublätter für die laufende Woche</button>
+    </div>
+    <div class="feedback" id="fb-40"></div>
+  </div>
+
+  <!-- Frage 47 -->
+  <div class="question" data-index="41" data-correct="B">
+    <div class="q-number">47. (6489) – 1 Punkt</div>
+    <div class="q-text">
+      Lenk- und Ruhezeiten: Wie viele Stunden darf die Lenkzeit in einer Woche höchsten betragen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">90 Stunden</button>
+      <button class="option" data-value="B">56 Stunden</button>
+      <button class="option" data-value="C">112 Stunden</button>
+      <button class="option" data-value="D">44 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-41"></div>
+  </div>
+
+  <!-- Frage 48 -->
+  <div class="question" data-index="42" data-correct="B">
+    <div class="q-number">48. (6488) – 1 Punkt</div>
+    <div class="q-text">
+      Lenk- und Ruhezeiten: Wie viele Stunden darf die Gesamt-Lenkzeit bei 2 aufeinander folgenden Wochen höchstens betragen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">72 Stunden</button>
+      <button class="option" data-value="B">90 Stunden</button>
+      <button class="option" data-value="C">80 Stunden</button>
+      <button class="option" data-value="D">112 Stunden</button>
+    </div>
+    <div class="feedback" id="fb-42"></div>
+  </div>
+
+  <!-- Frage 49 -->
+  <div class="question" data-index="43" data-correct="A">
+    <div class="q-number">49. (90789) – 1 Punkt</div>
+    <div class="q-text">
+      Sie kommen in eine Straßenkontrolle. Sie sollen beweisen, dass Sie die Qualifikation nach dem Berufskraftfahrer-Qualifikations-Gesetz haben - oder dass Sie an einer Weiterbildung teilgenommen haben.
+      Wie kann das nachgewiesen werden?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Sie zeigen Ihren Fahrerqualifikationsnachweis.</button>
+      <button class="option" data-value="B">Sie zeigen eine Kopie von der Weiterbildungs-Bestätigung.</button>
+      <button class="option" data-value="C">Der Kontrollbeamte kann das in der IHK-Datenbank überprüfen.</button>
+      <button class="option" data-value="D">Sie geben eine eidesstattliche Erklärung vor Ort.</button>
+    </div>
+    <div class="feedback" id="fb-43"></div>
+  </div>
+
+  <!-- Frage 50 -->
+  <div class="question" data-index="44" data-correct="A">
+    <div class="q-number">50. (90710) – 1 Punkt</div>
+    <div class="q-text">
+      Berufskraftfahrerqualifikationsgesetz (BKrFQG): Ein Fahrer fährt im gewerblichen Verkehr einen Lkw mit 5 Tonnen zGG. 
+      Im BKrFQG steht, dass der Fahrer Weiterbildungen machen muss. 
+      Bei einer Verkehrskontrolle wird festgestellt, dass er keine Weiterbildung gemacht hat. Was ist die Folge?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Der Fahrer kann mit einem hohen Bußgeld bestraft werden. Der Arbeitgeber kann auch mit einem hohen Bußgeld bestraft werden, weil er die Fahrt erlaubt hat.</button>
+      <button class="option" data-value="B">Es hat keine Folgen, weil die Weiterbildungs-Pflicht nach dem BKrFQG nur für Fahrten mit Fahrzeugen über 7,5 t zGG gilt.</button>
+      <button class="option" data-value="C">Für den Fahrer hat es keine Folgen. Aber der Arbeitgeber kann mit Bußgeldern bestraft werden.</button>
+      <button class="option" data-value="D">Es hat keine Folgen, weil die Weiterbildungs-Pflicht nach dem BKrFQG nur für Fahrten mit Fahrzeugen ab 12 t zGG gilt.</button>
+    </div>
+    <div class="feedback" id="fb-44"></div>
+  </div>
+
+  <!-- Frage 51 -->
+  <div class="question" data-index="45" data-correct="B">
+    <div class="q-number">51. (68603) – 1 Punkt</div>
+    <div class="q-text">
+      Berufskraftfahrerqualifikationsgesetz (BKrFQG): Ein Fahrer hat letztes Jahr eine Fahrerlaubnis Klassen C und D gemacht. 
+      Nun möchte er das Fahren zum Beruf machen. Was muss er tun (nach BKrFQG)?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Er muss zuerst 35 Stunden Weiterbildung machen.</button>
+      <button class="option" data-value="B">Er muss zuerst eine Grundqualifikation nachweisen.</button>
+      <button class="option" data-value="C">Er muss zuerst einen Antrag beim Kraftfahrtbundesamt stellen.</button>
+      <button class="option" data-value="D">Er muss eine zusätzliche Prüfung beim Straßenverkehrsamt machen.</button>
+    </div>
+    <div class="feedback" id="fb-45"></div>
+  </div>
+
+  <!-- Frage 52 -->
+  <div class="question" data-index="46" data-correct="A">
+    <div class="q-number">52. (68286) – 1 Punkt</div>
+    <div class="q-text">
+      Berufskraftfahrerqualifikationsgesetz (BKrFQG): Ein Fahrer fährt im gewerblichen Verkehr einen Lkw mit 5 Tonnen zGG. 
+      Im BKrFQG steht, dass der Fahrer Weiterbildungen machen muss. 
+      Bei einer Verkehrskontrolle wird festgestellt, dass er keine gültige Weiterbildung hat. 
+      Welche Folgen hat fehlende gültige Weiterbildung?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Der Fahrer kann mit einem hohen Bußgeld bestraft werden. Der Arbeitgeber kann auch mit einem hohen Bußgeld bestraft werden, weil er die Fahrt erlaubt hat.</button>
+      <button class="option" data-value="B">Es hat keine Folgen, weil die Weiterbildungs-Pflicht nach dem BKrFQG nur für Fahrten mit Fahrzeugen über 7,5 t zGG gilt.</button>
+      <button class="option" data-value="C">Für den Fahrer hat es keine Folgen. Aber der Arbeitgeber kann mit Bußgeldern bestraft werden.</button>
+      <button class="option" data-value="D">Es hat keine Folgen, weil die Weiterbildungs-Pflicht nach dem BKrFQG nur für Fahrten mit Fahrzeugen ab 12 t zGG gilt.</button>
+    </div>
+    <div class="feedback" id="fb-46"></div>
+  </div>
+
+  <!-- Frage 53 -->
+  <div class="question" data-index="47" data-correct="B">
+    <div class="q-number">53. (6562) – 1 Punkt</div>
+    <div class="q-text">
+      EU-Berufskraftfahrer-Richtlinie und Berufskraftfahrer-Qualifikations-Gesetz: Warum gibt es diese Regelungen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Es soll nicht so viele Berufskraftfahrer geben.</button>
+      <button class="option" data-value="B">Die Verkehrssicherheit soll höher werden.</button>
+      <button class="option" data-value="C">Der Mindestlohn für Kraftfahrer soll gesichert werden.</button>
+      <button class="option" data-value="D">Man will mit Transporten viel Geld verdienen.</button>
+    </div>
+    <div class="feedback" id="fb-47"></div>
+  </div>
+
+  <!-- Frage 54 -->
+  <div class="question" data-index="48" data-correct="D">
+    <div class="q-number">54. (6559) – 1 Punkt</div>
+    <div class="q-text">
+      Wo kann man Weiterbildungskurse nach dem Berufskraftfahrer-Qualifikations-Gesetz (BKrFQG) machen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">in allen Fahrschulen</button>
+      <button class="option" data-value="B">nur an den Volkshochschulen am Wohnort des Fahrers</button>
+      <button class="option" data-value="C">grundsätzlich bei der IHK am Wohnort des Fahrers</button>
+      <button class="option" data-value="D">in einer gemäß BKrFQG zugelassenen Ausbildungsstätte</button>
+    </div>
+    <div class="feedback" id="fb-48"></div>
+  </div>
+
+  <!-- Frage 55 -->
+  <div class="question" data-index="49" data-correct="B">
+    <div class="q-number">55. (6558) – 1 Punkt</div>
+    <div class="q-text">
+      Berufskraftfahrer-Qualifikations-Gesetz: Für welche Fahrten ist in Deutschland eine Grundqualifikation nicht erforderlich?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">gewerbliche Güterbeförderung mit einem 7,5-t-Lkw</button>
+      <button class="option" data-value="B">private Umzüge mit einem 7,5-t-Lkw</button>
+      <button class="option" data-value="C">gewerbliche Umzugstransporte und Güterbeförderungen mit einem 7,5-t-Lkw</button>
+      <button class="option" data-value="D">Werkverkehr mit einem 7,5-t-Lkw</button>
+    </div>
+    <div class="feedback" id="fb-49"></div>
+  </div>
+
+  <!-- Frage 56 -->
+  <div class="question" data-index="50" data-correct="A">
+    <div class="q-number">56. (90709) – 1 Punkt</div>
+    <div class="q-text">
+      Güterkraftverkehrsgesetz (GüKG): Welches Dokument muss der Fahrer während der Fahrt immer dabeihaben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Erlaubnis für den gewerblichen Güterkraftverkehr</button>
+      <button class="option" data-value="B">Prüfprotokoll für die Sicherheitsprüfung</button>
+      <button class="option" data-value="C">Bestätigung über arbeitsfreie Tage</button>
+      <button class="option" data-value="D">Zulassungsbescheinigung Teil II</button>
+    </div>
+    <div class="feedback" id="fb-50"></div>
+  </div>
+
+  <!-- Frage 57 -->
+  <div class="question" data-index="51" data-correct="D">
+    <div class="q-number">57. (6563) – 1 Punkt</div>
+    <div class="q-text">
+      Welches Dokument muss der Fahrer laut Güterkraftverkehrsgesetz (GüKG) während der Fahrt mitführen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Sozialversicherungsausweis</button>
+      <button class="option" data-value="B">Führerschein</button>
+      <button class="option" data-value="C">Zulassungsbescheinigung Teil I</button>
+      <button class="option" data-value="D">Erlaubnis für den gewerblichen Güterkraftverkehr</button>
+    </div>
+    <div class="feedback" id="fb-51"></div>
+  </div>
+
+  <!-- Frage 58 -->
+  <div class="question" data-index="52" data-correct="C">
+    <div class="q-number">58. (68677) – 2 Punkte</div>
+    <div class="q-text">
+      Nach welchen Kriterien wird die Höhe der Straßen-Maut berechnet?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">der Transportzeit</button>
+      <button class="option" data-value="B">dem Transportgut</button>
+      <button class="option" data-value="C">den gefahrenen Kilometern</button>
+      <button class="option" data-value="D">der Nutzlast</button>
+      <button class="option" data-value="E">der Anzahl der Achsen</button>
+    </div>
+    <div class="feedback" id="fb-52"></div>
+  </div>
+
+<!-- Frage 60 -->
+<div class="question" data-index="53" data-correct="A">
+  <div class="q-number">60. (68647) – 1 Punkt</div>
+  <div class="q-text">
+    Für welche Zeit gilt das Sonn- und Feiertagsfahrverbot gemäß § 30 Straßenverkehrsordnung (StVO)?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">an Sonn- und Feiertagen von 0 bis 24 Uhr</button>
+    <button class="option" data-value="B">an Sonn- und Feiertagen von 13 bis 20 Uhr</button>
+    <button class="option" data-value="C">an Sonn- und Feiertagen von 0 bis 22 Uhr</button>
+    <button class="option" data-value="D">an Samstagen ab 22 Uhr bis sonntags 0 Uhr</button>
+  </div>
+  <div class="feedback" id="fb-53"></div>
+</div>
+
+<!-- Frage 61 -->
+<div class="question" data-index="54" data-correct="D">
+  <div class="q-number">61. (68643) – 1 Punkt</div>
+  <div class="q-text">
+    Nach welchen Kriterien wird die Höhe der Straßenmaut berechnet?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">nach Achslasten und Zuladung</button>
+    <button class="option" data-value="B">zeitabhängig, nach gefahrenen Tagen</button>
+    <button class="option" data-value="C">nur nach gefahrenen Kilometern</button>
+    <button class="option" data-value="D">nach Schadstoffklassen, Anzahl der Achsen, Gewichtsklasse, Lärmbelastung und gefahrenen Kilometern</button>
+  </div>
+  <div class="feedback" id="fb-54"></div>
+</div>
+
+<!-- Frage 62 -->
+<div class="question" data-index="55" data-correct="B">
+  <div class="q-number">62. (68625) – 1 Punkt</div>
+  <div class="q-text">
+    Wie weit darf eine Ladung bei einem Einzelfahrzeug (ohne Anhänger) nach hinten hinausragen, wenn die Wegstrecke länger als 100 Kilometer ist?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">überhaupt nicht</button>
+    <button class="option" data-value="B">bis zu 1,5 m</button>
+    <button class="option" data-value="C">bis 2,5 m</button>
+    <button class="option" data-value="D">bis zu 3 m</button>
+  </div>
+  <div class="feedback" id="fb-55"></div>
+</div>
+
+<!-- Frage 63 -->
+<div class="question" data-index="56" data-correct="C,D">
+  <div class="q-number">63. (68622) – 2 Punkte</div>
+  <div class="q-text">
+    Nach welchen Kriterien wird die Höhe der Straßen-Maut berechnet?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">nach dem Transportgut</button>
+    <button class="option" data-value="B">nach der Transportzeit</button>
+    <button class="option" data-value="C">nach der Schadstoffklasse</button>
+    <button class="option" data-value="D">nach der Anzahl der Achsen</button>
+    <button class="option" data-value="E">nach den Tag- oder Nachtfahrten</button>
+  </div>
+  <div class="feedback" id="fb-56"></div>
+</div>
+
+<!-- Frage 64 -->
+<div class="question" data-index="57" data-correct="D">
+  <div class="q-number">64. (68620) – 1 Punkt</div>
+  <div class="q-text">
+    An Sonn- und Feiertagen dürfen in der Zeit von 0 bis 22 Uhr bestimmte Fahrzeuge nicht fahren. Welche sind das?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">alle Lastkraftwagen unabhängig von der zulässigen Gesamtmasse</button>
+    <button class="option" data-value="B">alle Last- und Personenkraftwagen über 3,5 t Gesamtmasse</button>
+    <button class="option" data-value="C">Lastkraftwagen ab 12 t zulässiger Gesamtmasse</button>
+    <button class="option" data-value="D">Lastkraftwagen über 7,5 t sowie Lkw mit Anhänger</button>
+  </div>
+  <div class="feedback" id="fb-57"></div>
+</div>
+
+<!-- Frage 65 -->
+<div class="question" data-index="58" data-correct="B">
+  <div class="q-number">65. (68607) – 1 Punkt</div>
+  <div class="q-text">
+    Welche der folgenden Aussagen zum Werkverkehr ist falsch?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">Fahrer im Werkverkehr unterliegen dem BKrFQG.</button>
+    <button class="option" data-value="B">Eine Beförderung im Werkverkehr ist erlaubnispflichtig.</button>
+    <button class="option" data-value="C">Angestellte Fahrer im Werkverkehr unterliegen dem Arbeitszeitgesetz.</button>
+    <button class="option" data-value="D">Im Werkverkehr müssen Lenk- und Ruhezeiten eingehalten werden.</button>
+  </div>
+  <div class="feedback" id="fb-58"></div>
+</div>
+
+<!-- Frage 66 -->
+<div class="question" data-index="59" data-correct="B,C,E">
+  <div class="q-number">66. (68291) – 2 Punkte</div>
+  <div class="q-text">
+    Ein Fahrer fährt einen LKW über 7,5 t. Unterwegs fällt die OBU (On-Board-Unit) aus. Was muss er beachten?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">Er kann wie geplant weiterfahren.</button>
+    <button class="option" data-value="B">Er muss das mautpflichtige Straßennetz verlassen.</button>
+    <button class="option" data-value="C">Am Ende der Fahrt muss er die Störung beim BALM melden.</button>
+    <button class="option" data-value="D">Er ist nicht verantwortlich, dass die OBU funktioniert.</button>
+    <button class="option" data-value="E">Er muss die Maut unverzüglich nachbuchen.</button>
+  </div>
+  <div class="feedback" id="fb-59"></div>
+</div>
+
+<!-- Frage 67 -->
+<div class="question" data-index="60" data-correct="B">
+  <div class="q-number">67. (68285) – 1 Punkt</div>
+  <div class="q-text">
+    Auf der Rückseite eines Lkws sehen Sie eine weiße Tafel (30×40 cm) mit großem schwarzem „A“. Was bedeutet das?
+  </div>
+  <div class="options">
+    <button class="option" data-value="A">Gefahrguttransport</button>
+    <button class="option" data-value="B">Abfalltransport</button>
+    <button class="option" data-value="C">Schwertransport</button>
+    <button class="option" data-value="D">Autotransport</button>
+  </div>
+  <div class="feedback" id="fb-60"></div>
+</div>
+
+  <!-- Frage 70 -->
+  <div class="question" data-index="61" data-correct="C">
+    <div class="q-number">70. (6650) – 2 Punkte</div>
+    <div class="q-text">
+      Nach welchen Kriterien wird die Höhe der Straßen-Maut berechnet? nach ...
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">der Gewichtsklasse</button>
+      <button class="option" data-value="B">der Nutzlast</button>
+      <button class="option" data-value="C">der Anzahl der Achsen</button>
+      <button class="option" data-value="D">den Tag- oder Nachtfahrten</button>
+      <button class="option" data-value="E">dem Transportgut</button>
+    </div>
+    <div class="feedback" id="fb-61"></div>
+  </div>
+
+  <!-- Frage 71 -->
+  <div class="question" data-index="62" data-correct="A">
+    <div class="q-number">71. (6649) – 1 Punkt</div>
+    <div class="q-text">
+      Sie sollen an einem Sonntag um 15:00 Uhr mit Ihrem Lkw (12 t zulässige Gesamtmasse) eine Beförderung von leichtverderblichem Obst und Gemüse durchführen.
+      Ist dies zulässig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ja, der Transport von leichtverderblichem Obst und Gemüse ist vom Fahrverbot ausgenommen.</button>
+      <button class="option" data-value="B">Ja, aber nur, wenn eine behördliche Ausnahmegenehmigung für den Transport vorliegt.</button>
+      <button class="option" data-value="C">Nein, das Sonn- und Feiertagsfahrverbot gilt ausnahmslos für alle Gütertransporte.</button>
+      <button class="option" data-value="D">Nein, weil mein Lkw die zulässige Gesamtmasse von 7,5 t übersteigt.</button>
+    </div>
+    <div class="feedback" id="fb-62"></div>
+  </div>
+
+  <!-- Frage 72 -->
+  <div class="question" data-index="63" data-correct="C">
+    <div class="q-number">72. (6645) – 1 Punkt</div>
+    <div class="q-text">
+      Sie fahren ein Fahrzeug ohne Anhänger. Die Strecke ist länger als 100 Kilometer. Wie weit darf die Ladung nach hinten hinausragen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">überhaupt nicht</button>
+      <button class="option" data-value="B">bis zu 1 m</button>
+      <button class="option" data-value="C">bis zu 1,5 m</button>
+      <button class="option" data-value="D">bis zu 3 m</button>
+    </div>
+    <div class="feedback" id="fb-63"></div>
+  </div>
+
+  <!-- Frage 73 -->
+  <div class="question" data-index="64" data-correct="B">
+    <div class="q-number">73. (6640) – 1 Punkt</div>
+    <div class="q-text">
+      Sie fahren einen Lkw im Werkverkehr. Welche Aussage ist falsch?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Fahrer im Werkverkehr müssen das Berufskraftfahrer-Qualifikations-Gesetz (BKrFQG) beachten.</button>
+      <button class="option" data-value="B">Werkverkehr ist nach dem Güterkraftverkehrsgesetz (GüKG) erlaubnispflichtig.</button>
+      <button class="option" data-value="C">Angestellte Fahrer im Werkverkehr müssen das Arbeitszeitgesetz beachten.</button>
+      <button class="option" data-value="D">Fahrer im Werkverkehr müssen die Vorschriften zu Lenk- und Ruhezeiten beachten.</button>
+    </div>
+    <div class="feedback" id="fb-64"></div>
+  </div>
+
+  <!-- Frage 74 -->
+  <div class="question" data-index="65" data-correct="A">
+    <div class="q-number">74. (6636) – 1 Punkt</div>
+    <div class="q-text">
+      Die Ladung ragt bei Ihrem LKW hinten mehr als 1 m über die Rückstrahler hinaus. Welche Kennzeichnung ist vorgeschrieben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">eine orange-farbene Fahne, mindestens 50 x 50 cm groß</button>
+      <button class="option" data-value="B">eine Kennzeichnung mit Park-Warntafeln</button>
+      <button class="option" data-value="C">eine blaue Fahne, mindestens 2 m über der Fahrbahn</button>
+      <button class="option" data-value="D">eine hellrote, mindestens 30 x 30 cm große Fahne</button>
+    </div>
+    <div class="feedback" id="fb-65"></div>
+  </div>
+
+  <!-- Frage 75 -->
+  <div class="question" data-index="66" data-correct="A">
+    <div class="q-number">75. (6634) – 1 Punkt</div>
+    <div class="q-text">
+      Innerstaatliche Beförderung im gewerblichen Güterkraftverkehr: Welchen Versicherungs-Nachweis muss ein Fahrer immer dabeihaben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Nachweis über Güterschaden-Haftpflichtversicherung</button>
+      <button class="option" data-value="B">Nachweis über Unfallversicherung für den Fahrer</button>
+      <button class="option" data-value="C">Nachweis über die private Haftpflichtversicherung</button>
+      <button class="option" data-value="D">Nachweis über die Rentenversicherung</button>
+    </div>
+    <div class="feedback" id="fb-66"></div>
+  </div>
+
+  <!-- Frage 76 -->
+  <div class="question" data-index="67" data-correct="A">
+    <div class="q-number">76. (6631) – 1 Punkt</div>
+    <div class="q-text">
+      Straßenbenutzungsgebühr in Deutschland: Welche Möglichkeit zur Erfassung der Maut gibt es?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">per Fahrzeuggerät (OBU)</button>
+      <button class="option" data-value="B">per GO-Box</button>
+      <button class="option" data-value="C">per Euro-Vignette</button>
+      <button class="option" data-value="D">per Aufkleber an der Innenseite der Windschutzscheibe</button>
+    </div>
+    <div class="feedback" id="fb-67"></div>
+  </div>
+
+  <!-- Frage 77 -->
+  <div class="question" data-index="68" data-correct="B">
+    <div class="q-number">77. (6629) – 1 Punkt</div>
+    <div class="q-text">
+      Straßenbenutzungsgebühr in Deutschland: Für welche Lkw muss Maut bezahlt werden?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">für Lkw ab 2,8 t zulässiges Gesamtgewicht</button>
+      <button class="option" data-value="B">für Lkw ab 7,5 t zulässiges Gesamtgewicht</button>
+      <button class="option" data-value="C">für Lkw ab 12 t zulässiges Gesamtgewicht</button>
+      <button class="option" data-value="D">für alle Lkw unabhängig vom zulässigen Gesamtgewicht</button>
+    </div>
+    <div class="feedback" id="fb-68"></div>
+  </div>
+
+  <!-- Frage 78 -->
+  <div class="question" data-index="69" data-correct="A">
+    <div class="q-number">78. (6626) – 1 Punkt</div>
+    <div class="q-text">
+      Für welche Fahrzeuge gilt das Sonn- und Feiertagsfahrverbot?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">für Lkw über 7,5 t zulässiges Gesamtgewicht und Lkw mit Anhänger</button>
+      <button class="option" data-value="B">für alle Fahrzeuge</button>
+      <button class="option" data-value="C">für alle Lkw</button>
+      <button class="option" data-value="D">nur für Fahrzeuge über 2,8 t zulässiges Gesamtgewicht</button>
+    </div>
+    <div class="feedback" id="fb-69"></div>
+  </div>
+
+  <!-- Frage 79 -->
+  <div class="question" data-index="70" data-correct="B">
+    <div class="q-number">79. (6624) – 1 Punkt</div>
+    <div class="q-text">
+      Ferienreiseverordnung in Deutschland: In welcher Zeit gilt das Fahrverbot?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">1. Juni bis 31. Juli</button>
+      <button class="option" data-value="B">1. Juli bis 31. August</button>
+      <button class="option" data-value="C">15. Juli bis 15. August</button>
+      <button class="option" data-value="D">1. Juni bis 1. September</button>
+    </div>
+    <div class="feedback" id="fb-70"></div>
+  </div>
+
+  <!-- Frage 80 -->
+  <div class="question" data-index="71" data-correct="B">
+    <div class="q-number">80. (68645) – 1 Punkt</div>
+    <div class="q-text">
+      Sie haben eine Ladung Kühlschränke übernommen.
+      Welche Angaben müssen Sie auf Wunsch des Absenders prüfen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Angaben zum Gesamtpreis der Kühlschränke</button>
+      <button class="option" data-value="B">Angaben zu Gewicht, Menge oder Inhalt im Frachtbrief</button>
+      <button class="option" data-value="C">Angaben zur Kühlleistung</button>
+      <button class="option" data-value="D">Angaben zur Energieeffizienzklasse</button>
+    </div>
+    <div class="feedback" id="fb-71"></div>
+  </div>
+
+  <!-- Frage 81 -->
+  <div class="question" data-index="72" data-correct="C">
+    <div class="q-number">81. (6570) – 1 Punkt</div>
+    <div class="q-text">
+      Nach § 7 Güterkraftverkehrsgesetz müssen Sie bei einem innerdeutschen Transport ein Begleitpapier mitführen.
+      Was müssen Sie diesbezüglich bei einer Kontrolle durch das Bundesamt für Logistik und Mobilität (BALM) beachten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Gar nichts, ich händige das Begleitpapier nicht aus.</button>
+      <button class="option" data-value="B">Ich händige das Begleitpapier nur nach telefonischer Rücksprache mit dem Absender aus.</button>
+      <button class="option" data-value="C">Das Begleitpapier ist auf Verlangen zur Prüfung auszuhändigen.</button>
+      <button class="option" data-value="D">Das Begleitpapier darf grundsätzlich nie ausgehändigt werden.</button>
+    </div>
+    <div class="feedback" id="fb-72"></div>
+  </div>
+
+  <!-- Frage 82 -->
+  <div class="question" data-index="73" data-correct="B">
+    <div class="q-number">82. (6569) – 1 Punkt</div>
+    <div class="q-text">
+      Ladung: Sie haben eine Ladung Kamin-Öfen übernommen. Was müssen Sie auf Wunsch des Absenders prüfen? (in Absprache mit Ihrem Arbeitgeber)
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">die Herstellerangaben zum Brennwert des Kaminofens</button>
+      <button class="option" data-value="B">Angaben zu Gewicht, Menge oder Inhalt im Frachtbrief</button>
+      <button class="option" data-value="C">Funktionsfähigkeit des Kaminofens</button>
+      <button class="option" data-value="D">Gesamtpreis der Ladung</button>
+    </div>
+    <div class="feedback" id="fb-73"></div>
+  </div>
+
+  <!-- Frage 83 -->
+  <div class="question" data-index="74" data-correct="A">
+    <div class="q-number">83. (6566) – 1 Punkt</div>
+    <div class="q-text">
+      Sie haben eine Ladung Computer übernommen.
+      Was müssen Sie auf Wunsch des Absenders prüfen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Angaben zu Gewicht, Menge oder Inhalt im Frachtbrief</button>
+      <button class="option" data-value="B">Funktionstüchtigkeit der Computer</button>
+      <button class="option" data-value="C">Gesamtpreis der Computer</button>
+      <button class="option" data-value="D">Farbe und Oberflächenbeschaffenheit der Computer</button>
+    </div>
+    <div class="feedback" id="fb-74"></div>
+  </div>
+
+  <!-- Frage 84 -->
+  <div class="question" data-index="75" data-correct="A">
+    <div class="q-number">84. (68672) – 1 Punkt</div>
+    <div class="q-text">
+      Mitführungspflicht der EU-Lizenz: Welche Aussage ist richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Das Original der EU-Lizenz bleibt am Firmensitz. Der Fahrer bekommt eine amtliche Ausfertigung als Begleitdokument.</button>
+      <button class="option" data-value="B">Es reicht, wenn der Fahrer eine Kopie der EU-Lizenz hat.</button>
+      <button class="option" data-value="C">Man muss die Original-EU-Lizenz bei jeder Beförderung mitführen. Eine Kopie bleibt am Firmensitz.</button>
+      <button class="option" data-value="D">Man darf nur eine beglaubigte Kopie mitführen.</button>
+    </div>
+    <div class="feedback" id="fb-75"></div>
+  </div>
+
+  <!-- Frage 85 -->
+  <div class="question" data-index="76" data-correct="B">
+    <div class="q-number">85. (6576) – 1 Punkt</div>
+    <div class="q-text">
+      Für welche Beförderung braucht man eine EU-Lizenz?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Werkverkehr mit einem LKw mit 12 Tonnen zGG von Stuttgart nach Rom</button>
+      <button class="option" data-value="B">Gewerblicher Güterverkehr mit einem 12-Tonnen Lkw von München nach Stockholm</button>
+      <button class="option" data-value="C">Werkverkehr von Köln nach Wolfsburg</button>
+      <button class="option" data-value="D">Güter-Beförderung von Dortmund nach Amsterdam mit einem Fahrzeug zGG 2,4 t</button>
+    </div>
+    <div class="feedback" id="fb-76"></div>
+  </div>
+
+  <!-- Frage 86 -->
+  <div class="question" data-index="77" data-correct="C">
+    <div class="q-number">86. (6575) – 1 Punkt</div>
+    <div class="q-text">
+      Welche Aussage zur EU-Lizenz ist richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Die EU-Lizenz muss eingeschweißt sein.</button>
+      <button class="option" data-value="B">Man muss immer die Original-Lizenz im Fahrzeug mitführen.</button>
+      <button class="option" data-value="C">Man muss bei jeder Beförderung innerhalb der EU eine beglaubigte Abschrift der EU-Lizenz mitführen.</button>
+      <button class="option" data-value="D">Die EU-Lizenz wird auf den Namen des Fahrers ausgestellt.</button>
+    </div>
+    <div class="feedback" id="fb-77"></div>
+  </div>
+
+  <!-- Frage 87 -->
+  <div class="question" data-index="78" data-correct="C">
+    <div class="q-number">87. (68676) – 1 Punkt</div>
+    <div class="q-text">
+      Frachtbrief: Sie fahren im grenzüberschreitenden Güterkraftverkehr. Sie laden bei 3 verschiedenen Absendern für 3 verschiedene Empfänger.
+      Wie viele CMR-Frachtbriefe müssen Sie haben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">1 Frachtbrief mit 3 Lieferscheinen</button>
+      <button class="option" data-value="B">1 Frachtbrief mit 3 Ladelisten</button>
+      <button class="option" data-value="C">3 Frachtbriefe</button>
+      <button class="option" data-value="D">1 Sammel-Frachtbrief</button>
+    </div>
+    <div class="feedback" id="fb-78"></div>
+  </div>
+
+  <!-- Frage 88 -->
+  <div class="question" data-index="79" data-correct="C">
+    <div class="q-number">88. (68669) – 1 Punkt</div>
+    <div class="q-text">
+      Frachtbrief: Sie fahren im grenzüberschreitenden Güterkraftverkehr. Sie laden bei 3 verschiedenen Absendern für 3 verschiedene Empfänger.
+      Wie viele CMR-Frachtbriefe müssen Sie haben?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">1 Frachtbrief mit 3 Lieferscheinen</button>
+      <button class="option" data-value="B">1 Frachtbrief mit 3 Ladelisten</button>
+      <button class="option" data-value="C">3 Frachtbriefe</button>
+      <button class="option" data-value="D">1 Sammel-Frachtbrief</button>
+    </div>
+    <div class="feedback" id="fb-79"></div>
+  </div>
+
+  <!-- Frage 89 -->
+  <div class="question" data-index="80" data-correct="B">
+    <div class="q-number">89. (68624) – 1 Punkt</div>
+    <div class="q-text">
+      Frachtbrief: Der Empfänger einer Ware reklamiert: Die Verpackung ist stark beschädigt. Wie verhalten Sie sich richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ich bestätige die Beschädigungen mündlich.</button>
+      <button class="option" data-value="B">Ich schreibe eine Notiz über die sichtbaren Beschädigungen in den Frachtbrief.</button>
+      <button class="option" data-value="C">Ich versichere dem Empfänger, dass meine Firma den Schaden ersetzt.</button>
+      <button class="option" data-value="D">Ich erkläre sofort, dass ich nicht schuld bin an den Beschädigungen.</button>
+    </div>
+    <div class="feedback" id="fb-80"></div>
+  </div>
+
+  <!-- Frage 90 -->
+  <div class="question" data-index="81" data-correct="B">
+    <div class="q-number">90. (68604) – 1 Punkt</div>
+    <div class="q-text">
+      Der Empfänger will den CMR-Frachtbrief nicht unterschreiben. Wie verhalten Sie sich richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ich unterschreibe in Vertretung des Empfängers.</button>
+      <button class="option" data-value="B">Ich frage meinen Arbeitgeber, was ich tun soll.</button>
+      <button class="option" data-value="C">Ich verzichte auf die Unterschrift.</button>
+      <button class="option" data-value="D">Ich nehme die Waren wieder mit.</button>
+    </div>
+    <div class="feedback" id="fb-81"></div>
+  </div>
+
+  <!-- Frage 91 -->
+  <div class="question" data-index="85" data-correct="B">
+    <div class="q-number">91. (68601) – 2 Punkte</div>
+    <div class="q-text">
+      Welche Angaben müssen im CMR-Frachtbrief stehen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Name und Anschrift des Fahrers</button>
+      <button class="option" data-value="B">Anzahl der Frachtstücke</button>
+      <button class="option" data-value="C">Nummer der Fahrerkarte</button>
+      <button class="option" data-value="D">Angaben, wie man die Ladung sichert</button>
+      <button class="option" data-value="E">Zeichen und Nummern der Frachtstücke</button>
+    </div>
+    <div class="feedback" id="fb-85"></div>
+  </div>
+
+  <!-- Frage 92 -->
+  <div class="question" data-index="86" data-correct="B">
+    <div class="q-number">92. (6592) – 1 Punkt</div>
+    <div class="q-text">
+      Welche Angaben müssen im CMR-Frachtbrief stehen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Name und Anschrift des Fahrers</button>
+      <button class="option" data-value="B">Anzahl, Zeichen und Nummern der Frachtstücke</button>
+      <button class="option" data-value="C">Nummer der Fahrerkarte</button>
+      <button class="option" data-value="D">Angaben, wie man die Ladung sichert</button>
+    </div>
+    <div class="feedback" id="fb-86"></div>
+  </div>
+
+  <!-- Frage 93 -->
+  <div class="question" data-index="87" data-correct="D">
+    <div class="q-number">93. (6587) – 1 Punkt</div>
+    <div class="q-text">
+      Wer bekommt je 1 Ausfertigung des CMR-Frachtbriefes?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Fahrer, Beifahrer und Empfänger</button>
+      <button class="option" data-value="B">Fahrer, Polizei und Absender</button>
+      <button class="option" data-value="C">Fahrer, Spedition und die Straßenverkehrs-Genossenschaft</button>
+      <button class="option" data-value="D">Absender, Empfänger und Frachtführer</button>
+    </div>
+    <div class="feedback" id="fb-87"></div>
+  </div>
+
+  <!-- Frage 94 -->
+  <div class="question" data-index="88" data-correct="B">
+    <div class="q-number">94. (6586) – 1 Punkt</div>
+    <div class="q-text">
+      In wie vielen Original-Ausfertigungen wird der CMR-Frachtbrief ausgestellt?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">1 Ausfertigung</button>
+      <button class="option" data-value="B">3 Ausfertigungen</button>
+      <button class="option" data-value="C">4 Ausfertigungen</button>
+      <button class="option" data-value="D">5 Ausfertigungen</button>
+    </div>
+    <div class="feedback" id="fb-88"></div>
+  </div>
+
+  <!-- Frage 95 -->
+  <div class="question" data-index="89" data-correct="B">
+    <div class="q-number">95. (6583) – 1 Punkt</div>
+    <div class="q-text">
+      Wegen eines Unfalls auf der Autobahn kommt es zu einem Stau. Die voraussichtliche Wartezeit wird mit mehreren Stunden angegeben.
+      Wie verhalten Sie sich richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ich nehme die nächste Ausfahrt und bringe die Waren zurück.</button>
+      <button class="option" data-value="B">Ich informiere mein Unternehmen und hole mir Weisungen ein.</button>
+      <button class="option" data-value="C">Ich rufe meine Familie an und teile meine spätere Ankunft mit.</button>
+      <button class="option" data-value="D">Ich unternehme nichts.</button>
+    </div>
+    <div class="feedback" id="fb-89"></div>
+  </div>
+
+  <!-- Frage 96 -->
+  <div class="question" data-index="90" data-correct="D">
+    <div class="q-number">96. (6581) – 1 Punkt</div>
+    <div class="q-text">
+      Sie machen einen Transport nach Neapel (Italien). Am Zielort bittet der Empfänger, dass Sie die Ware weiter nach Palermo (Italien) befördern.
+      Wie reagieren Sie richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Empfänger können grundsätzlich keine Aufträge erteilen.</button>
+      <button class="option" data-value="B">Ich fahre nach Palermo, wenn ich dafür einen Extralohn bekomme.</button>
+      <button class="option" data-value="C">Ich weigere mich und bestehe darauf, dass mein Fahrzeug entladen wird.</button>
+      <button class="option" data-value="D">Ich bitte den Empfänger, dass er die Änderung mit meinem Unternehmen abspricht.</button>
+    </div>
+    <div class="feedback" id="fb-90"></div>
+  </div>
+
+  <!-- Frage 97 -->
+  <div class="question" data-index="91" data-correct="C">
+    <div class="q-number">97. (6579) – 2 Punkte</div>
+    <div class="q-text">
+      Durch lange Wartezeiten bei der Grenzabfertigung wird die Beförderung für voraussichtlich einen Tag unterbrochen.
+      Wie verhalten Sie sich richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ich unternehme nichts und warte.</button>
+      <button class="option" data-value="B">Ich informiere zuerst die Waren-Annahme beim Empfänger.</button>
+      <button class="option" data-value="C">Ich informiere sofort mein Unternehmen und frage nach Anweisungen.</button>
+      <button class="option" data-value="D">Ich suche erst einmal um eine Übernachtungsmöglichkeit.</button>
+    </div>
+    <div class="feedback" id="fb-91"></div>
+  </div>
+
+  <!-- Frage 98 -->
+  <div class="question" data-index="92" data-correct="A">
+    <div class="q-number">98. (6578) – 1 Punkt</div>
+    <div class="q-text">
+      Was muss ein Fahrer bei der Übernahme von Gütern gemäß CMR prüfen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">dass die Angaben im Frachtbrief über die Anzahl der Frachtstücke richtig sind</button>
+      <button class="option" data-value="B">den Inhalt der Frachtstücke</button>
+      <button class="option" data-value="C">die Höhe des Beförderungs-Entgelts</button>
+      <button class="option" data-value="D">den Handelswert der Ware</button>
+    </div>
+    <div class="feedback" id="fb-92"></div>
+  </div>
+
+  <!-- Frage 99 -->
+  <div class="question" data-index="93" data-correct="A">
+    <div class="q-number">99. (6535) – 1 Punkt</div>
+    <div class="q-text">
+      Ladung: Sie sollen 10 eingeschweißte Paletten nach Schweden befördern.
+      Bei der Übernahme sehen Sie: 2 Paletten sind gebrochen und die Folien sind stark beschädigt. Trotzdem will der Absender, dass Sie die Paletten befördern.
+      Wie verhalten Sie sich richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Ich nehme die Paletten an und schreibe einen entsprechenden Hinweis in den Frachtbrief.</button>
+      <button class="option" data-value="B">Ich nehme die Paletten an.</button>
+      <button class="option" data-value="C">Ich nehme beschädigte Güter grundsätzlich nicht an.</button>
+      <button class="option" data-value="D">Ich repariere die Paletten. Dann kann ich sie sicher befördern.</button>
+    </div>
+    <div class="feedback" id="fb-93"></div>
+  </div>
+
+  <!-- Frage 100 -->
+  <div class="question" data-index="94" data-correct="A">
+    <div class="q-number">100. (68678) – 2 Punkte</div>
+    <div class="q-text">
+      In welchen Ländern gilt die EURO-Vignette?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Niederlande</button>
+      <button class="option" data-value="B">Österreich</button>
+      <button class="option" data-value="C">Finnland</button>
+      <button class="option" data-value="D">Polen</button>
+      <button class="option" data-value="E">Luxemburg</button>
+    </div>
+    <div class="feedback" id="fb-94"></div>
+  </div>
+
+  <!-- Frage 101 -->
+  <div class="question" data-index="95" data-correct="B">
+    <div class="q-number">101. (68606) – 1 Punkt</div>
+    <div class="q-text">
+      Sie sollen mit Ihrem Lkw Kabotage-Fahrten in den Niederlanden durchführen. Welches Dokument brauchen Sie dafür?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Erlaubnis des BALM zur Durchführung von Kabotage</button>
+      <button class="option" data-value="B">EU-Lizenz</button>
+      <button class="option" data-value="C">Begleitschein</button>
+      <button class="option" data-value="D">CEMT-Genehmigung</button>
+    </div>
+    <div class="feedback" id="fb-95"></div>
+  </div>
+
+  <!-- Frage 102 -->
+  <div class="question" data-index="96" data-correct="D">
+    <div class="q-number">102. (68598) – 1 Punkt</div>
+    <div class="q-text">
+      Sie fahren mit einem Fahrzeug unter Zollverschluss. Sie kommen in eine Verkehrskontrolle. Sie sollen die Zollplombe öffnen.
+      Wie verhalten Sie sich richtig?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Sie bitten die Polizei, die Plombe selbst zu öffnen.</button>
+      <button class="option" data-value="B">Sie öffnen die Plombe.</button>
+      <button class="option" data-value="C">Sie öffnen die Plombe und schreiben dies in den Frachtbrief.</button>
+      <button class="option" data-value="D">Sie bestehen darauf, dass ein Zollbeamter kommen soll.</button>
+    </div>
+    <div class="feedback" id="fb-96"></div>
+  </div>
+
+  <!-- Frage 103 -->
+  <div class="question" data-index="97" data-correct="A">
+    <div class="q-number">103. (68290) – 1 Punkt</div>
+    <div class="q-text">
+      Ein portugiesischer Transport-Unternehmer befördert Elektrogeräte von Lissabon nach Stuttgart. Die Geräte werden am Montag in Stuttgart entladen.
+      Danach möchte der Fahrer bis zum übernächsten Dienstag noch 5 Beförderungen in Deutschland durchführen.
+      Ist das erlaubt?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Nein, erlaubt sind nur 3 Beförderungen in 7 Tagen.</button>
+      <button class="option" data-value="B">Nein, erlaubt sind nur 2 Beförderungen in 5 Tagen.</button>
+      <button class="option" data-value="C">Ja, 5 Beförderungen im Monat sind erlaubt.</button>
+      <button class="option" data-value="D">Ja, es gibt innerhalb der EU kein Kabotage-Verbot mehr.</button>
+    </div>
+    <div class="feedback" id="fb-97"></div>
+  </div>
+
+  <!-- Frage 104 -->
+  <div class="question" data-index="98" data-correct="A">
+    <div class="q-number">104. (66900) – 1 Punkt</div>
+    <div class="q-text">
+      Beförderung im Carnet-TIR-Verfahren: Sie verwenden ein Carnet-TIR-Begleitscheinheft. Was müssen Sie hier beachten?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Sie dürfen die gelben Blätter (Protokoll) nie aus dem Begleitscheinheft entfernen.</button>
+      <button class="option" data-value="B">Sie müssen dem Empfänger das vollständige Begleitscheinheft geben.</button>
+      <button class="option" data-value="C">Sie dürfen kein Blatt entfernen.</button>
+      <button class="option" data-value="D">Am Ende der Beförderung müssen Sie alle Blätter entfernen.</button>
+    </div>
+    <div class="feedback" id="fb-98"></div>
+  </div>
+
+  <!-- Frage 106 -->
+  <div class="question" data-index="99" data-correct="C">
+    <div class="q-number">106. (6751) – 1 Punkt</div>
+    <div class="q-text">
+      Carnet-TIR-Verfahren: Was wird an der Abgangs-Zollstelle geprüft?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Zollverschlussanerkenntnis und Vignetten über die bezahlte Maut in den Durchgangsländern</button>
+      <button class="option" data-value="B">das Carnet und ein gültiger Personalausweis des Lkw-Fahrers</button>
+      <button class="option" data-value="C">Zollverschlussanerkenntnis und Kennzeichnung mit TIR-Tafeln</button>
+      <button class="option" data-value="D">ein vollständig ausgefülltes Carnet und ein Anhängerverzeichnis</button>
+    </div>
+    <div class="feedback" id="fb-99"></div>
+  </div>
+
+  <!-- Frage 107 -->
+  <div class="question" data-index="100" data-correct="A E C">
+    <div class="q-number">107. (6615) – 2 Punkte</div>
+    <div class="q-text">
+      In welchen Ländern gilt die EURO-Vignette?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Belgien</button>
+      <button class="option" data-value="B">Österreich</button>
+      <button class="option" data-value="C">Schweden</button>
+      <button class="option" data-value="D">Polen</button>
+      <button class="option" data-value="E">Luxemburg</button>
+    </div>
+    <div class="feedback" id="fb-100"></div>
+  </div>
+
+  <!-- Frage 108 -->
+  <div class="question" data-index="101" data-correct="A C D">
+    <div class="q-number">108. (6613) – 2 Punkte</div>
+    <div class="q-text">
+      In welchen Ländern gilt die EURO-Vignette?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Schweden</button>
+      <button class="option" data-value="B">Österreich</button>
+      <button class="option" data-value="C">Finnland</button>
+      <button class="option" data-value="D">Niederlande</button>
+      <button class="option" data-value="E">Norwegen</button>
+    </div>
+    <div class="feedback" id="fb-101"></div>
+  </div>
+
+  <!-- Frage 109 -->
+  <div class="question" data-index="102" data-correct="D">
+    <div class="q-number">109. (6610) – 1 Punkt</div>
+    <div class="q-text">
+      Transport im Carnet-TIR-Verfahren: Bei der Abfahrtskontrolle merken Sie, dass die Zollplombe beschädigt ist.
+      Was müssen Sie tun?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Nichts. Die Plombe ist nur beschädigt, sie fehlt nicht.</button>
+      <button class="option" data-value="B">Die Plombe reparieren und die Beschädigung bei der Ankunfts-Zollstelle melden.</button>
+      <button class="option" data-value="C">Nichts. Die Ware ist offensichtlich nicht beschädigt.</button>
+      <button class="option" data-value="D">Ich informiere die Polizei und die nächste Zollstelle.</button>
+    </div>
+    <div class="feedback" id="fb-102"></div>
+  </div>
+
+  <!-- Frage 110 -->
+  <div class="question" data-index="103" data-correct="B">
+    <div class="q-number">110. (6608) – 1 Punkt</div>
+    <div class="q-text">
+      Ein deutscher Frachtführer hat Güter von Deutschland nach Spanien befördert.
+      Wie viele Kabotage-Fahrten darf er innerhalb von 7 Tagen durchführen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">2 Fahrten</button>
+      <button class="option" data-value="B">3 Fahrten</button>
+      <button class="option" data-value="C">4 Fahrten</button>
+      <button class="option" data-value="D">5 Fahrten</button>
+    </div>
+    <div class="feedback" id="fb-103"></div>
+  </div>
+
+  <!-- Frage 111 -->
+  <div class="question" data-index="104" data-correct="A">
+    <div class="q-number">111. (6605) – 1 Punkt</div>
+    <div class="q-text">
+      Ein französisches Transport-Unternehmen möchte nach einem Transport Kabotage in Deutschland durchführen.
+      Wie viele Beförderungen darf es machen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">3 Beförderungen in 7 Tagen</button>
+      <button class="option" data-value="B">3 Beförderungen in 14 Tagen</button>
+      <button class="option" data-value="C">es gibt keine Beschränkungen</button>
+      <button class="option" data-value="D">7 Beförderungen in 7 Tagen</button>
+    </div>
+    <div class="feedback" id="fb-104"></div>
+  </div>
+
+  <!-- Frage 112 -->
+  <div class="question" data-index="105" data-correct="D">
+    <div class="q-number">112. (6604) – 1 Punkt</div>
+    <div class="q-text">
+      Nachtfahrverbot in Österreich: Welches Kennzeichen muss ein Lkw haben, damit er auch nachts fahren darf?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">weißes "S" auf grünem Grund</button>
+      <button class="option" data-value="B">weißes "K" auf grünem Grund</button>
+      <button class="option" data-value="C">schwarzes "A" auf weißem Grund</button>
+      <button class="option" data-value="D">weißes "L" auf grünem Grund</button>
+    </div>
+    <div class="feedback" id="fb-105"></div>
+  </div>
+
+  <!-- Frage 113 -->
+  <div class="question" data-index="106" data-correct="A">
+    <div class="q-number">113. (6600) – 1 Punkt</div>
+    <div class="q-text">
+      Carnet-TIR-Verfahren: Wo müssen die TIR-Tafeln angebracht werden?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">gut sichtbar, eine Tafel vorn und eine hinten</button>
+      <button class="option" data-value="B">an der Windschutzscheibe</button>
+      <button class="option" data-value="C">seitlich je zwei Tafeln</button>
+      <button class="option" data-value="D">nur vorne</button>
+    </div>
+    <div class="feedback" id="fb-106"></div>
+  </div>
+
+  <!-- Frage 114 -->
+  <div class="question" data-index="107" data-correct="A">
+    <div class="q-number">114. (68646) – 1 Punkt</div>
+    <div class="q-text">
+      Unfall mit Gefahrgut: Welche Unterlage enthält die Sofortmaßnahmen?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">Schriftliche Weisungen</button>
+      <button class="option" data-value="B">Frachtbrief</button>
+      <button class="option" data-value="C">Ladeliste</button>
+      <button class="option" data-value="D">ADR-Schulungsbescheinigung</button>
+    </div>
+    <div class="feedback" id="fb-107"></div>
+  </div>
+
+  <!-- Frage 115 -->
+  <div class="question" data-index="108" data-correct="A">
+    <div class="q-number">115. (43052) – 1 Punkt</div>
+    <div class="q-text">
+      Transport leicht verderblicher Lebensmittel: Wie weist man die technischen Voraussetzungen nach?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">mit ATP-Bescheinigung oder ATP-Schild</button>
+      <button class="option" data-value="B">mit Gutachten der Kfz-Zulassungsstelle</button>
+      <button class="option" data-value="C">mit Zulassungsbescheinigung Teil 1</button>
+      <button class="option" data-value="D">mit Zulassungsbescheinigung Teil 2</button>
+    </div>
+    <div class="feedback" id="fb-108"></div>
+  </div>
+
+  <!-- Frage 116 -->
+  <div class="question" data-index="109" data-correct="A E">
+    <div class="q-number">116. (6623) – 2 Punkte</div>
+    <div class="q-text">
+      Transport leicht verderblicher Lebensmittel: Wie weist man die technischen Voraussetzungen nach?
+    </div>
+    <div class="options">
+      <button class="option" data-value="A">mit einer ATP-Bescheinigung</button>
+      <button class="option" data-value="B">mit der Zulassungsbescheinigung Teil 2</button>
+      <button class="option" data-value="C">mit Gutachten der Kfz-Zulassungsstelle</button>
+      <button class="option" data-value="D">mit der Zulassungsbescheinigung Teil 1</button>
+      <button class="option" data-value="E">mit einem ATP-Schild am Fahrzeug</button>
+    </div>
+    <div class="feedback" id="fb-109"></div>
+  </div>
+
+
+  <div class="nav">
+    <button id="prevBtn" class="secondary" disabled>&larr; Önceki soru</button>
+    <button id="nextBtn">Sonraki soru &rarr;</button>
+  </div>
+
+  <!-- Soru atlama menüsü -->
+  <div class="jump-wrapper">
+    <div class="jump-title">Soruya atla:</div>
+    <div class="jump-nav" id="jumpNav"></div>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const questions = Array.from(document.querySelectorAll('.question'));
+    const total = questions.length;
+
+    const scoreEl = document.getElementById('score');
+    const totalEl = document.getElementById('total');
+    const currentEl = document.getElementById('current');
+    const countEl = document.getElementById('count');
+    const progressEl = document.getElementById('progress');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const jumpNav = document.getElementById('jumpNav');
+
+    totalEl.textContent = total.toString();
+    countEl.textContent = total.toString();
+
+    let currentIndex = 0;
+    let score = 0;
+    const answered = new Array(total).fill(false);
+    const answers = new Array(total).fill(null);
+    const jumpButtons = [];
+
+    function updateProgress() {
+      const ratio = (currentIndex + 1) / total * 100;
+      progressEl.style.width = ratio + '%';
+      currentEl.textContent = (currentIndex + 1).toString();
+      prevBtn.disabled = currentIndex === 0;
+      nextBtn.disabled = currentIndex === total - 1;
+    }
+
+    function updateJumpActive() {
+      jumpButtons.forEach((btn, idx) => {
+        if (idx === currentIndex) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+
+    function showQuestion(index) {
+      questions.forEach(q => q.classList.remove('active'));
+      questions[index].classList.add('active');
+      updateProgress();
+      updateJumpActive();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function handleOptionClick(e) {
+      const btn = e.currentTarget;
+      const qEl = btn.closest('.question');
+      const index = parseInt(qEl.getAttribute('data-index'), 10);
+      const correct = qEl.getAttribute('data-correct');
+      const value = btn.getAttribute('data-value');
+      const fb = document.getElementById('fb-' + index);
+
+      // Stil reset
+      qEl.querySelectorAll('.option').forEach(o => {
+        o.classList.remove('correct', 'wrong');
+      });
+
+      answers[index] = value;
+
+      if (value === correct) {
+        btn.classList.add('correct');
+        fb.textContent = 'Doğru ✔';
+        fb.className = 'feedback correct';
+        if (!answered[index]) {
+          answered[index] = true;
+          score++;
+          scoreEl.textContent = score.toString();
+        }
+      } else {
+        btn.classList.add('wrong');
+        fb.textContent = 'Mal ✘  (Doğru cevap: ' + correct + ')';
+        fb.className = 'feedback wrong';
+        if (!answered[index]) {
+          answered[index] = true;
+        }
+        // Doğru olanı da göster
+        qEl.querySelectorAll('.option').forEach(o => {
+          if (o.getAttribute('data-value') === correct) {
+            o.classList.add('correct');
+          }
+        });
+      }
+    }
+
+    // Cevap butonlarına tıklama
+    questions.forEach(q => {
+      const opts = q.querySelectorAll('.option');
+      opts.forEach(o => o.addEventListener('click', handleOptionClick));
+    });
+
+    // Önceki / Sonraki
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showQuestion(currentIndex);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < total - 1) {
+        currentIndex++;
+        showQuestion(currentIndex);
+      }
+    });
+
+    // Soru atlama butonlarını oluştur
+    for (let i = 0; i < total; i++) {
+      const b = document.createElement('button');
+      b.textContent = (i + 1).toString();
+      b.dataset.index = i.toString();
+      b.addEventListener('click', () => {
+        currentIndex = i;
+        showQuestion(currentIndex);
+      });
+      jumpNav.appendChild(b);
+      jumpButtons.push(b);
+    }
+
+    // ilk yüklemede ilk soruyu göster
+    showQuestion(currentIndex);
+  })();
+</script>
+</body>
+</html>
